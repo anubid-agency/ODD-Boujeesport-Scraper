@@ -2,7 +2,8 @@
 """
 Isolated multi-source odds pipeline runner for GitHub Actions.
 Uses Scrapling's Fetcher (fast HTTP) and optional StealthyFetcher (browser fallback)
-to write out/matches.jsonl and out/health.json without letting one source crash others.
+with safe worker concurrency, timeout isolation, JSON/HTML extraction, and metadata filtering
+to write out/matches.jsonl and out/health.json.
 """
 
 from __future__ import annotations
@@ -31,7 +32,7 @@ def make_event_id(source: str, league: str, home: str, away: str, start_time: Op
 
 def looks_like_metadata_payload(text: str) -> bool:
     """Reject obvious translation, dictionary, menu, jurisdiction, or config blobs."""
-    head = text[:2000].lower()
+    head = text[:2500].lower()
     metadata_markers = (
         '"translations"',
         '"dictionary"',
@@ -48,7 +49,7 @@ def parse_json_or_html_body(raw_body: Any) -> Tuple[Optional[Any], str]:
     if raw_body is None:
         return None, ""
     if isinstance(raw_body, (dict, list)):
-        return raw_body, json.dumps(raw_body)
+        return raw_body, json.dumps(raw_body, ensure_ascii=False)
     if isinstance(raw_body, bytes):
         text = raw_body.decode("utf-8", errors="replace")
     else:
@@ -97,9 +98,9 @@ def normalize_match(
 
 def extract_matches_from_payload(source: str, raw_body: Any, fetched_at: str) -> List[Dict[str, Any]]:
     """
-    Generic structural extractor for known/candidate JSON shapes:
+    Generic structural extractor for sportsbook JSON feeds and embedded state:
     - KBet-style list of match dicts with home_team / away_team / league / is_live / odds
-    - SemaBet-style data.sports -> events
+    - SemaBet / D247Bet-style data.sports -> events
     - Forzza-style list items with matchOffers / competitors / teams
     - Generic recursive scan for objects with home/away or competitor pairs
     """
@@ -142,18 +143,24 @@ def extract_matches_from_payload(source: str, raw_body: Any, fetched_at: str) ->
             matches.append(rec)
 
     def walk(node: Any, ctx_sport: str = "football", ctx_league: str = "", depth: int = 0) -> None:
-        if depth > 6 or node is None:
+        if depth > 7 or node is None:
             return
         if isinstance(node, dict):
-            sport_val = node.get("sportName") or node.get("sport") or ctx_sport
+            sport_val = node.get("sportName") or node.get("sport_name") or node.get("sport") or ctx_sport
             if isinstance(sport_val, dict):
                 sport_val = sport_val.get("name") or ctx_sport
-            league_val = node.get("league") or node.get("competition") or node.get("tournament") or ctx_league
+            league_val = (
+                node.get("league")
+                or node.get("leagueName")
+                or node.get("competition")
+                or node.get("tournament")
+                or ctx_league
+            )
             if isinstance(league_val, dict):
                 league_val = league_val.get("name") or ctx_league
 
-            home = node.get("home_team") or node.get("homeTeam") or node.get("home")
-            away = node.get("away_team") or node.get("awayTeam") or node.get("away")
+            home = node.get("home_team") or node.get("homeTeam") or node.get("home") or node.get("team1")
+            away = node.get("away_team") or node.get("awayTeam") or node.get("away") or node.get("team2")
 
             if not (home and away):
                 comps = node.get("competitors") or node.get("teams")
@@ -170,7 +177,7 @@ def extract_matches_from_payload(source: str, raw_body: Any, fetched_at: str) ->
                         home, away = parts[0].strip(), parts[1].strip()
 
             if home and away:
-                odds_raw = node.get("odds") or node.get("markets") or node.get("matchOffers")
+                odds_raw = node.get("odds") or node.get("markets") or node.get("matchOffers") or node.get("outcomes")
                 markets_obj: Dict[str, Any] = {}
                 if isinstance(odds_raw, dict):
                     markets_obj = odds_raw
@@ -189,7 +196,7 @@ def extract_matches_from_payload(source: str, raw_body: Any, fetched_at: str) ->
                 )
 
             for k, v in node.items():
-                if k in ("odds", "markets", "matchOffers"):
+                if k in ("odds", "markets", "matchOffers", "outcomes"):
                     continue
                 walk(v, str(sport_val or "football"), str(league_val or ""), depth + 1)
 
@@ -202,7 +209,7 @@ def extract_matches_from_payload(source: str, raw_body: Any, fetched_at: str) ->
 
 
 def extract_html_matches(source: str, raw_body: Any, fetched_at: str) -> List[Dict[str, Any]]:
-    """Lightweight HTML match-pair extractor for HTML pages or SSR shells."""
+    """Extract match-pair patterns from HTML pages or SSR content."""
     _, html_text = parse_json_or_html_body(raw_body)
     if not html_text or len(html_text) < 200:
         return []
@@ -295,37 +302,42 @@ SOURCES: List[Dict[str, Any]] = [
     },
     {
         "name": "semabet-d247bet",
-        "url": os.getenv("SOURCE_URL_SEMABET", "https://semabet.ug/"),
+        "url": os.getenv("SOURCE_URL_SEMABET", "https://d247bet.ug/"),
         "prefer_browser": False,
         "parser": "auto",
+        "timeout_sec": 35,
     },
     {
         "name": "forzza",
         "url": os.getenv("SOURCE_URL_FORZZA", "https://forzzalogin.com/"),
         "prefer_browser": True,
         "parser": "auto",
+        "timeout_sec": 35,
     },
     {
         "name": "championbet",
         "url": os.getenv("SOURCE_URL_CHAMPIONBET", "https://championbet.ug/"),
         "prefer_browser": True,
         "parser": "auto",
+        "timeout_sec": 35,
     },
     {
         "name": "betpawa",
         "url": os.getenv("SOURCE_URL_BETPAWA", "https://www.betpawa.ug/"),
         "prefer_browser": True,
         "parser": "auto",
+        "timeout_sec": 35,
     },
     {
         "name": "22bet",
         "url": os.getenv("SOURCE_URL_22BET", "https://22bet.com/"),
         "prefer_browser": True,
         "parser": "auto",
+        "timeout_sec": 35,
     },
     {
         "name": "betika",
-        "url": os.getenv("SOURCE_URL_BETIKA", "https://betika.com/"),
+        "url": os.getenv("SOURCE_URL_BETIKA", "https://www.betika.com/en-ke/"),
         "prefer_browser": False,
         "parser": "auto",
     },
@@ -343,18 +355,18 @@ def parse_by_type(source: str, parser_type: str, body: Any, fetched_at: str) -> 
         return extract_html_matches(source=source, raw_body=body, fetched_at=fetched_at)
     if parser_type == "generic_json":
         return extract_matches_from_payload(source=source, raw_body=body, fetched_at=fetched_at)
-    # "auto": try JSON extraction first, then HTML match-pair fallback
     json_records = extract_matches_from_payload(source=source, raw_body=body, fetched_at=fetched_at)
     if json_records:
         return json_records
     return extract_html_matches(source=source, raw_body=body, fetched_at=fetched_at)
 
 
-def run_single_source(spec: Dict[str, Any], allow_browser: bool, timeout_sec: int = 35) -> Tuple[List[Dict[str, Any]], Dict[str, Any]]:
+def run_single_source(spec: Dict[str, Any], allow_browser: bool, default_timeout_sec: int = 35) -> Tuple[List[Dict[str, Any]], Dict[str, Any]]:
     name = spec["name"]
     url = (spec.get("url") or "").strip()
     prefer_browser = bool(spec.get("prefer_browser", False))
     parser_type = spec.get("parser", "auto")
+    src_timeout = int(spec.get("timeout_sec") or default_timeout_sec)
     started = time.monotonic()
     fetched_at = utc_now_iso()
 
@@ -385,7 +397,7 @@ def run_single_source(spec: Dict[str, Any], allow_browser: bool, timeout_sec: in
     for mode, use_browser in attempts:
         last_mode = mode
         try:
-            code, body = fetch_with_scrapling(url=url, use_browser=use_browser, timeout_sec=min(timeout_sec, 30))
+            code, body = fetch_with_scrapling(url=url, use_browser=use_browser, timeout_sec=src_timeout)
             last_status_code = code
 
             if code and 200 <= code < 300:
@@ -449,8 +461,10 @@ def main() -> None:
     health_path = out_dir / "health.json"
 
     allow_browser = os.getenv("RUN_BROWSER", "false").strip().lower() in ("1", "true", "yes")
-    per_source_timeout = int(os.getenv("PER_SOURCE_TIMEOUT_SEC", "45"))
-    max_workers = int(os.getenv("MAX_WORKERS", "4"))
+    per_source_timeout = int(os.getenv("PER_SOURCE_TIMEOUT_SEC", "50"))
+    # Keep concurrency conservative when headless browsers are enabled to avoid runner OOM/CPU stalls
+    default_workers = 2 if allow_browser else 4
+    max_workers = int(os.getenv("MAX_WORKERS", str(default_workers)))
 
     all_matches: List[Dict[str, Any]] = []
     health_entries: List[Dict[str, Any]] = []
