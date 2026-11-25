@@ -505,3 +505,24 @@ def main() -> None:
                     "duration_sec": None,
                     "error": f"{type(exc).__name__}: {str(exc)[:180]}",
                     "updated_at": utc_now_iso(),
+                })
+
+    health_entries.sort(key=lambda item: item["source"])
+
+    with matches_path.open("w", encoding="utf-8") as mf:
+        for row in all_matches:
+            mf.write(json.dumps(row, ensure_ascii=False) + "\n")
+
+    ok_sources = [h for h in health_entries if h["status"] == "ok"]
+    health_payload = {
+        "generated_at": utc_now_iso(),
+        "browser_fallback_enabled": allow_browser,
+        "total_sources": len(health_entries),
+        "working_sources": len(ok_sources),
+        "total_matches": len(all_matches),
+        "sources": health_entries,
+    }
+    health_path.write_text(json.dumps(health_payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+
+    print(
+        f"Done: {len(ok_sources)}/{len(health_entries)} sources ok | "
