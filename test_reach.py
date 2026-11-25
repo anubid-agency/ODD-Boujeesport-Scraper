@@ -2,7 +2,6 @@ import json
 import re
 import time
 from datetime import datetime, timezone
-from urllib.parse import urlparse
 
 from scrapling.fetchers import Fetcher, StealthyFetcher
 
@@ -33,7 +32,6 @@ def looks_blocked(status_code: int | None, html_text: str) -> bool:
     if status_code in (403, 429, 503):
         return True
     sample = (html_text or "")[:12000].lower()
-    # Only flag short pages or explicit challenge markers; never flag rich 200 pages
     if len(html_text or "") < 4000 and any(m in sample for m in BLOCK_MARKERS):
         return True
     if status_code == 200 and len(html_text or "") < 600 and "just a moment..." in sample:
@@ -51,7 +49,6 @@ def has_odds_signals(html_text: str) -> bool:
 
 
 def extract_body_text(page) -> str:
-    # Scrapling responses expose .body or .html_content depending on fetcher
     raw = getattr(page, "html_content", None) or getattr(page, "body", "") or ""
     if isinstance(raw, bytes):
         return raw.decode("utf-8", errors="replace")
@@ -152,7 +149,6 @@ def main() -> None:
     with_odds = sum(1 for r in results if r["ok"] and r["odds"])
     print(f"\n{reachable}/{len(results)} sites reachable | {with_odds}/{len(results)} with odds signals")
 
-    # Optional: dump JSON summary for downstream inspection
     with open("reach_report.json", "w", encoding="utf-8") as f:
         json.dump(results, f, indent=2)
 
