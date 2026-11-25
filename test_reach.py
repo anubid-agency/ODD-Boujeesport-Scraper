@@ -34,7 +34,8 @@ from datetime import datetime, timezone
 from scrapling.fetchers import Fetcher
 
 # --- EDIT THESE: use the page that lists football matches / odds ---
-SITES = {
+# Batch 1 was tested already (6 of 10 reachable). Kept here for re-testing.
+BATCH_1 = {
     "BetPawa":     "https://www.betpawa.ug/",
     "22Bet":       "https://22bet.com/",
     "1xBet":       "https://1xbet.com/",
@@ -46,6 +47,25 @@ SITES = {
     "GSB":         "https://gsb.ug/sportsbook/upcoming",
     "Kagwirawo":   "https://kagwirawo.com/",
 }
+
+# Batch 2. These addresses are GUESSES (searching did not confirm them).
+# If a site shows "address not found", the URL is wrong: open the real site
+# in your browser, copy its address, and paste it here.
+BATCH_2 = {
+    "BongoBongo":  "https://bongobongo.ug/",
+    "BetVita":     "https://betvita.com/",
+    "BetPaka":     "https://betpaka.com/",
+    "Forzza":      "https://forzza.ug/",
+    "UgandaBet":   "https://ugandabet.com/",
+    "SemaBet":     "https://semabet.co.ug/",
+    "SmartBet":    "https://smartbet.co.ug/",
+    "TopBet":      "https://topbets.ug/",
+    "Premier Bet": "https://premierbet.ug/",
+    "Sahara Games": "https://saharagames.com/",
+}
+
+# Which batch to test. Default is batch 2. Set the env var SITES_BATCH=1 for batch 1.
+SITES = BATCH_1 if os.environ.get("SITES_BATCH", "2").strip() == "1" else BATCH_2
 
 PROXY = (os.environ.get("BOOKMAKER_PROXY") or "").strip() or None
 
@@ -163,6 +183,10 @@ def test_site(name, url):
         except Exception as e:
             result["method"] = method
             result["error"] = scrub(f"{type(e).__name__}: {str(e)[:150]}")
+
+    err = (result.get("error") or "").lower()
+    if any(k in err for k in ("could not resolve", "name_not_resolved", "name or service not known")):
+        result["error"] = "address not found - check the URL. " + result["error"]
 
     result["seconds"] = round(time.time() - start, 1)
     return result
