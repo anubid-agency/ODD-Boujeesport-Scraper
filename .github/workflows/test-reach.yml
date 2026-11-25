@@ -22,7 +22,8 @@ jobs:
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
           pip install "scrapling[fetchers]" lxml
-          scrapling install
+          python -m patchright install chromium --with-deps
+          python -m playwright install chromium --with-deps
 
       - name: Run reachability test
         continue-on-error: true
