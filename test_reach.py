@@ -1,4 +1,5 @@
 import json
+import os
 import re
 import time
 from datetime import datetime, timezone
@@ -11,6 +12,10 @@ SITES = [
     {"name": "Sahara Games", "url": "https://ug.saharagames.com/", "use_stealth": False},
     {"name": "SemaBet", "url": "https://semabet.com/", "use_stealth": False},
     {"name": "SemaBet (.ug)", "url": "https://semabet.ug/", "use_stealth": False},
+    {"name": "22Bet", "url": "https://22bet.ug/", "use_stealth": True},
+    {"name": "AbaBet", "url": "https://ababet.ug/", "use_stealth": True},
+    {"name": "Kagwirawo (KBet)", "url": "https://kbet.ug/", "use_stealth": True},
+    {"name": "Kagwirawo (.ug)", "url": "https://www.kagwirawo.ug/", "use_stealth": False},
 ]
 
 BLOCK_MARKERS = [
@@ -22,17 +27,18 @@ BLOCK_MARKERS = [
     "incapsula",
     "access denied",
     "bot protection",
+    "403 forbidden",
 ]
 
 ODDS_DECIMAL_RE = re.compile(r"\b\d+\.\d{2}\b")
-ODDS_KEYWORDS = ("odds", "1x2", "handicap", "over/under", "draw", "prematch", "live")
+ODDS_KEYWORDS = ("odds", "1x2", "handicap", "over/under", "draw", "prematch", "live", "sports")
 
 
 def looks_blocked(status_code: int | None, html_text: str) -> bool:
-    if status_code in (403, 429, 503):
+    if status_code in (401, 403, 407, 429, 503):
         return True
     sample = (html_text or "")[:12000].lower()
-    if len(html_text or "") < 4000 and any(m in sample for m in BLOCK_MARKERS):
+    if len(html_text or "") < 6000 and any(m in sample for m in BLOCK_MARKERS):
         return True
     if status_code == 200 and len(html_text or "") < 600 and "just a moment..." in sample:
         return True
@@ -55,7 +61,24 @@ def extract_body_text(page) -> str:
     return str(raw)
 
 
-def probe_site(site: dict) -> dict:
+def run_stealth(url: str, fallback_url: str, proxy: str | None):
+    stealth_kwargs = {
+        "headless": True,
+        "network_idle": True,
+        "timeout": 35000,
+    }
+    if proxy:
+        stealth_kwargs["proxy"] = proxy
+
+    page = StealthyFetcher.fetch(url, **stealth_kwargs)
+    status = getattr(page, "status", 200)
+    final_url = str(getattr(page, "url", fallback_url) or fallback_url)
+    html_text = extract_body_text(page)
+    blocked = looks_blocked(status, html_text)
+    return status, final_url, html_text, blocked
+
+
+def probe_site(site: dict, proxy: str | None) -> dict:
     name = site["name"]
     url = site["url"]
     force_stealth = site.get("use_stealth", False)
@@ -70,40 +93,27 @@ def probe_site(site: dict) -> dict:
 
     try:
         if not force_stealth:
-            page = Fetcher.get(
-                url,
-                headers={"Referer": "https://www.google.com/"},
-                follow_redirects=True,
-                timeout=20,
-            )
+            fetcher_kwargs = {
+                "headers": {
+                    "Referer": "https://www.google.com/",
+                    "Accept-Language": "en-US,en;q=0.9",
+                },
+                "follow_redirects": True,
+                "timeout": 20,
+            }
+            if proxy:
+                fetcher_kwargs["proxy"] = proxy
+
+            page = Fetcher.get(url, **fetcher_kwargs)
             status = getattr(page, "status", 200)
             final_url = str(getattr(page, "url", url) or url)
             html_text = extract_body_text(page)
 
-            if looks_blocked(status, html_text):
-                blocked = True
+            if looks_blocked(status, html_text) or (status == 200 and len(html_text) < 2500 and not has_odds_signals(html_text)):
                 method_used = "stealth (fallback)"
-                page = StealthyFetcher.fetch(
-                    url,
-                    headless=True,
-                    network_idle=True,
-                    timeout=30000,
-                )
-                status = getattr(page, "status", 200)
-                final_url = str(getattr(page, "url", final_url) or final_url)
-                html_text = extract_body_text(page)
-                blocked = looks_blocked(status, html_text)
+                status, final_url, html_text, blocked = run_stealth(final_url, final_url, proxy)
         else:
-            page = StealthyFetcher.fetch(
-                url,
-                headless=True,
-                network_idle=True,
-                timeout=30000,
-            )
-            status = getattr(page, "status", 200)
-            final_url = str(getattr(page, "url", url) or url)
-            html_text = extract_body_text(page)
-            blocked = looks_blocked(status, html_text)
+            status, final_url, html_text, blocked = run_stealth(url, url, proxy)
 
     except Exception as exc:
         error_msg = str(exc).splitlines()[0][:80]
@@ -118,7 +128,7 @@ def probe_site(site: dict) -> dict:
         "ok": ok,
         "method": method_used,
         "status": status if status is not None else "-",
-        "secs": f"{elapsed:.1f}",
+        "secs": round(elapsed, 1),
         "size": size_bytes,
         "blocked": blocked,
         "odds": odds_found,
@@ -127,9 +137,13 @@ def probe_site(site: dict) -> dict:
 
 
 def main() -> None:
-    print(f"Run at {datetime.now(timezone.utc).isoformat()}\n")
+    proxy = os.environ.get("BOOKMAKER_PROXY") or None
+    run_ts = datetime.now(timezone.utc).isoformat()
+    print(f"Run at {run_ts}")
+    print(f"Proxy configured: {'yes' if proxy else 'no'}\n")
+
     header = (
-        f"{'Site':<16} {'OK':<6} {'Method':<18} {'Status':<7} "
+        f"{'Site':<18} {'OK':<6} {'Method':<18} {'Status':<7} "
         f"{'Secs':<6} {'Size':<9} {'Blocked':<8} {'Odds?':<6} {'Final URL / Error'}"
     )
     print(header)
@@ -137,11 +151,11 @@ def main() -> None:
 
     results = []
     for site in SITES:
-        row = probe_site(site)
+        row = probe_site(site, proxy)
         results.append(row)
         print(
-            f"{row['site']:<16} {str(row['ok']):<6} {row['method']:<18} "
-            f"{str(row['status']):<7} {row['secs']:<6} {row['size']:<9} "
+            f"{row['site']:<18} {str(row['ok']):<6} {row['method']:<18} "
+            f"{str(row['status']):<7} {str(row['secs']):<6} {row['size']:<9} "
             f"{str(row['blocked']):<8} {str(row['odds']):<6} {row['final']}"
         )
 
@@ -149,8 +163,16 @@ def main() -> None:
     with_odds = sum(1 for r in results if r["ok"] and r["odds"])
     print(f"\n{reachable}/{len(results)} sites reachable | {with_odds}/{len(results)} with odds signals")
 
-    with open("reach_report.json", "w", encoding="utf-8") as f:
-        json.dump(results, f, indent=2)
+    payload = {
+        "run_at": run_ts,
+        "proxy_configured": bool(proxy),
+        "reachable": reachable,
+        "with_odds": with_odds,
+        "total": len(results),
+        "results": results,
+    }
+    with open("results.json", "w", encoding="utf-8") as f:
+        json.dump(payload, f, indent=2)
 
 
 if __name__ == "__main__":
