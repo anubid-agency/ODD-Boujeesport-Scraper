@@ -15,7 +15,7 @@ import os
 from pathlib import Path
 import re
 import time
-from typing import Any, Callable, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 from scrapling.fetchers import Fetcher, StealthyFetcher
 
@@ -152,11 +152,9 @@ def extract_matches_from_payload(source: str, raw_body: Any, fetched_at: str) ->
             if isinstance(league_val, dict):
                 league_val = league_val.get("name") or ctx_league
 
-            # Direct home/away team fields
             home = node.get("home_team") or node.get("homeTeam") or node.get("home")
             away = node.get("away_team") or node.get("awayTeam") or node.get("away")
 
-            # Competitors / teams list fallback
             if not (home and away):
                 comps = node.get("competitors") or node.get("teams")
                 if isinstance(comps, list) and len(comps) >= 2:
@@ -164,7 +162,6 @@ def extract_matches_from_payload(source: str, raw_body: Any, fetched_at: str) ->
                     home = c0.get("name") if isinstance(c0, dict) else c0
                     away = c1.get("name") if isinstance(c1, dict) else c1
 
-            # Match string fallback e.g. "Team A vs Team B" or "Team A - Team B"
             if not (home and away):
                 title = node.get("name") or node.get("matchName") or node.get("eventName")
                 if isinstance(title, str):
@@ -211,7 +208,6 @@ def extract_ababet_html(raw_body: Any, fetched_at: str) -> List[Dict[str, Any]]:
         return []
     matches: List[Dict[str, Any]] = []
     seen = set()
-    # Match common "Team A vs Team B" or "Team A - Team B" patterns in text tags
     for m in re.finditer(r">([^<]{2,45}?)\s+(?:vs\.?|[-–])\s+([^<]{2,45}?)<", html_text):
         home = re.sub(r"\s+", " ", m.group(1)).strip()
         away = re.sub(r"\s+", " ", m.group(2)).strip()
@@ -278,7 +274,6 @@ def classify_http_failure(status: int) -> str:
     return "empty_or_invalid_response"
 
 
-# Source registry: configure URLs/modes per bookmaker without coupling failures
 SOURCES: List[Dict[str, Any]] = [
     {
         "name": "ababet",
@@ -288,7 +283,7 @@ SOURCES: List[Dict[str, Any]] = [
     },
     {
         "name": "kagwirawo-kbet",
-        "url": os.getenv("SOURCE_URL_KBET", "https://kbet.co.ug/api/v1/events/upcoming"),
+        "url": os.getenv("SOURCE_URL_KBET", "https://kbet.ug/api/v1/events/upcoming"),
         "prefer_browser": False,
         "parser": "generic_json",
     },
@@ -363,7 +358,6 @@ def run_single_source(spec: Dict[str, Any], allow_browser: bool, timeout_sec: in
             "updated_at": fetched_at,
         }
 
-    # Try fast HTTP first unless browser is explicitly preferred AND allowed
     attempts: List[Tuple[str, bool]] = []
     if prefer_browser and allow_browser:
         attempts.append(("browser", True))
@@ -401,7 +395,6 @@ def run_single_source(spec: Dict[str, Any], allow_browser: bool, timeout_sec: in
                     }
 
                 last_error = "HTTP 200 received but zero normalized matches extracted (empty or non-event payload)"
-                # If HTTP returned 200 with empty/JS shell and browser fallback is available, try browser next
                 if not use_browser and allow_browser:
                     continue
 
@@ -426,7 +419,7 @@ def run_single_source(spec: Dict[str, Any], allow_browser: bool, timeout_sec: in
                 continue
 
     status_label = classify_http_failure(last_status_code or 0) if last_status_code else "error"
-    if "not identified as metadata" in last_error.lower() or "metadata" in last_error.lower():
+    if "metadata" in last_error.lower():
         status_label = "metadata_only"
 
     return [], {
