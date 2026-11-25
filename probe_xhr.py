@@ -9,7 +9,6 @@ from urllib.parse import urlparse
 
 from patchright.async_api import async_playwright
 
-# Update this list with the exact bookmaker URLs you want to inspect
 SITES = [
     {"name": "Forzza", "url": "https://forzza1.com/"},
     {"name": "Sahara Games", "url": "https://ug.saharagames.com/"},
@@ -81,8 +80,10 @@ SENSITIVE_HEADERS = {
 }
 
 OUT_DIR = Path("xhr_captures")
-MAX_BODY_BYTES = 1_500_000  # 1.5 MB per saved JSON file to keep artifacts manageable
-MAX_FILES_PER_SITE = 60
+MAX_BODY_BYTES = 1_500_000
+MAX_FILES_PER_SITE = 50
+PER_SITE_HARD_TIMEOUT = 35.0
+CONCURRENCY = 4
 
 
 def slugify(name: str) -> str:
@@ -106,7 +107,6 @@ def is_noise_url(url: str) -> bool:
 
 
 def score_json_payload(parsed) -> tuple[bool, list[str], int]:
-    """Return (looks_like_odds_data, matched_keys, estimated_item_count)."""
     matched_keys = set()
     item_count = 0
 
@@ -147,63 +147,44 @@ def parse_proxy(proxy_str: str | None) -> dict | None:
     return cfg
 
 
-async def probe_site(playwright, site: dict, proxy_cfg: dict | None) -> dict:
-    name = site["name"]
+async def _probe_site_inner(browser, site: dict, state: dict) -> None:
     url = site["url"]
-    site_slug = slugify(name)
-    site_dir = OUT_DIR / site_slug
-    site_dir.mkdir(parents=True, exist_ok=True)
+    site_dir = state["site_dir"]
+    captures = state["captures"]
+    bg_tasks: set[asyncio.Task] = set()
 
-    start = time.perf_counter()
-    captures = []
-    error_msg = ""
-    final_url = url
-    page_title = ""
-    saved_count = 0
-
-    browser = None
+    context = await browser.new_context(
+        user_agent=(
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+            "AppleWebKit/537.36 (KHTML, like Gecko) "
+            "Chrome/131.0.0.0 Safari/537.36"
+        ),
+        locale="en-US",
+        ignore_https_errors=True,
+    )
     try:
-        launch_kwargs = {"headless": True}
-        if proxy_cfg:
-            launch_kwargs["proxy"] = proxy_cfg
-
-        browser = await playwright.chromium.launch(**launch_kwargs)
-        context = await browser.new_context(
-            user_agent=(
-                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-                "AppleWebKit/537.36 (KHTML, like Gecko) "
-                "Chrome/131.0.0.0 Safari/537.36"
-            ),
-            locale="en-US",
-            ignore_https_errors=True,
-        )
         page = await context.new_page()
-        page.set_default_timeout(25000)
+        page.set_default_timeout(15000)
 
         async def handle_response(response):
-            nonlocal saved_count
             try:
                 req = response.request
                 res_url = response.url
-                if res_url.startswith("data:") or res_url.startswith("blob:"):
-                    return
-                if is_noise_url(res_url):
+                if res_url.startswith(("data:", "blob:")) or is_noise_url(res_url):
                     return
 
                 headers = response.headers or {}
                 ctype = (headers.get("content-type") or "").lower()
                 resource_type = req.resource_type
-
                 if resource_type not in ("xhr", "fetch") and "json" not in ctype:
                     return
 
-                body_bytes = await response.body()
+                body_bytes = await asyncio.wait_for(response.body(), timeout=5.0)
                 if not body_bytes:
                     return
 
                 text_preview = body_bytes[:4096].decode("utf-8", errors="replace").lstrip()
-                looks_json = "json" in ctype or text_preview.startswith("{") or text_preview.startswith("[")
-                if not looks_json:
+                if not ("json" in ctype or text_preview.startswith(("{", "["))):
                     return
 
                 parsed_json = None
@@ -217,11 +198,18 @@ async def probe_site(playwright, site: dict, proxy_cfg: dict | None) -> dict:
                     pass
 
                 saved_file = None
-                if parsed_json is not None and len(body_bytes) <= MAX_BODY_BYTES and saved_count < MAX_FILES_PER_SITE:
-                    saved_count += 1
-                    idx = f"{saved_count:03d}"
+                if (
+                    parsed_json is not None
+                    and len(body_bytes) <= MAX_BODY_BYTES
+                    and state["saved_count"] < MAX_FILES_PER_SITE
+                ):
+                    state["saved_count"] += 1
+                    idx = f"{state['saved_count']:03d}"
                     parsed_u = urlparse(res_url)
-                    path_tail = re.sub(r"[^a-zA-Z0-9_-]+", "_", (parsed_u.path or "root").strip("/"))[:40] or "root"
+                    path_tail = (
+                        re.sub(r"[^a-zA-Z0-9_-]+", "_", (parsed_u.path or "root").strip("/"))[:40]
+                        or "root"
+                    )
                     fname = f"{idx}_{response.status}_{path_tail}.json"
                     fpath = site_dir / fname
                     fpath.write_text(
@@ -258,60 +246,91 @@ async def probe_site(playwright, site: dict, proxy_cfg: dict | None) -> dict:
                     }
                 )
             except Exception:
-                # Ignore responses whose bodies were discarded or closed mid-navigation
                 return
 
-        page.on("response", lambda res: asyncio.create_task(handle_response(res)))
+        def on_response(res):
+            task = asyncio.create_task(handle_response(res))
+            bg_tasks.add(task)
+            task.add_done_callback(bg_tasks.discard)
 
-        await page.goto(url, wait_until="domcontentloaded", timeout=30000)
+        page.on("response", on_response)
+
+        await page.goto(url, wait_until="domcontentloaded", timeout=20000)
         try:
-            await page.wait_for_load_state("networkidle", timeout=15000)
+            await page.wait_for_load_state("networkidle", timeout=8000)
         except Exception:
             pass
-        # Brief settle window for delayed XHR/fetch odds calls
-        await page.wait_for_timeout(3000)
+        await page.wait_for_timeout(2500)
 
-        # Let any queued response tasks finish writing
-        pending = [t for t in asyncio.all_tasks() if t is not asyncio.current_task()]
-        if pending:
-            await asyncio.gather(*pending, return_exceptions=True)
+        if bg_tasks:
+            await asyncio.wait(list(bg_tasks), timeout=3.0)
+            for t in list(bg_tasks):
+                if not t.done():
+                    t.cancel()
 
-        final_url = page.url or url
+        state["final_url"] = page.url or url
         try:
-            page_title = (await page.title())[:100]
+            state["title"] = (await page.title())[:100]
         except Exception:
-            page_title = ""
-
-        await context.close()
-    except Exception as exc:
-        error_msg = str(exc).splitlines()[0][:120]
+            pass
     finally:
-        if browser:
-            try:
-                await browser.close()
-            except Exception:
-                pass
+        try:
+            await asyncio.wait_for(context.close(), timeout=5.0)
+        except Exception:
+            pass
 
-    elapsed = round(time.perf_counter() - start, 1)
-    odds_hits = [c for c in captures if c["odds_signal"]]
-    top_candidates = sorted(
-        odds_hits or captures,
-        key=lambda x: (x["odds_signal"], len(x["matched_keys"]), x["bytes"]),
-        reverse=True,
-    )[:5]
 
-    return {
-        "site": name,
-        "start_url": url,
-        "final_url": final_url,
-        "title": page_title,
-        "secs": elapsed,
-        "error": error_msg,
-        "json_requests_captured": len(captures),
-        "odds_candidate_requests": len(odds_hits),
-        "top_candidates": top_candidates,
-        "captures": captures,
-    }
+async def probe_site(browser, site: dict, sem: asyncio.Semaphore) -> dict:
+    async with sem:
+        name = site["name"]
+        url = site["url"]
+        site_dir = OUT_DIR / slugify(name)
+        site_dir.mkdir(parents=True, exist_ok=True)
+
+        state = {
+            "site_dir": site_dir,
+            "captures": [],
+            "saved_count": 0,
+            "final_url": url,
+            "title": "",
+        }
+        error_msg = ""
+        start = time.perf_counter()
+
+        try:
+            await asyncio.wait_for(_probe_site_inner(browser, site, state), timeout=PER_SITE_HARD_TIMEOUT)
+        except asyncio.TimeoutError:
+            error_msg = f"Hard timeout after {int(PER_SITE_HARD_TIMEOUT)}s"
+        except Exception as exc:
+            error_msg = str(exc).splitlines()[0][:120]
+
+        elapsed = round(time.perf_counter() - start, 1)
+        captures = state["captures"]
+        odds_hits = [c for c in captures if c["odds_signal"]]
+        top_candidates = sorted(
+            odds_hits or captures,
+            key=lambda x: (x["odds_signal"], len(x["matched_keys"]), x["bytes"]),
+            reverse=True,
+        )[:5]
+
+        status_or_url = f"ERR: {error_msg}" if error_msg else state["final_url"]
+        print(
+            f"{name:<20} {elapsed:<6} {len(captures):<7} {len(odds_hits):<9} {status_or_url}",
+            flush=True,
+        )
+
+        return {
+            "site": name,
+            "start_url": url,
+            "final_url": state["final_url"],
+            "title": state["title"],
+            "secs": elapsed,
+            "error": error_msg,
+            "json_requests_captured": len(captures),
+            "odds_candidate_requests": len(odds_hits),
+            "top_candidates": top_candidates,
+            "captures": captures,
+        }
 
 
 async def main() -> None:
@@ -320,24 +339,28 @@ async def main() -> None:
     proxy_cfg = parse_proxy(proxy_raw)
     run_ts = datetime.now(timezone.utc).isoformat()
 
-    print(f"XHR/JSON Probe at {run_ts}")
-    print(f"Proxy configured: {'yes' if proxy_cfg else 'no'}\n")
+    print(f"XHR/JSON Probe at {run_ts}", flush=True)
+    print(f"Proxy configured: {'yes' if proxy_cfg else 'no'}\n", flush=True)
 
     header = f"{'Site':<20} {'Secs':<6} {'JSONs':<7} {'OddsJSON':<9} {'Final URL / Error'}"
-    print(header)
-    print("-" * len(header))
+    print(header, flush=True)
+    print("-" * len(header), flush=True)
 
-    site_reports = []
+    sem = asyncio.Semaphore(CONCURRENCY)
+    launch_kwargs = {"headless": True}
+    if proxy_cfg:
+        launch_kwargs["proxy"] = proxy_cfg
+
     async with async_playwright() as p:
-        for site in SITES:
-            rep = await probe_site(p, site, proxy_cfg)
-            site_reports.append(rep)
-            status_or_url = f"ERR: {rep['error']}" if rep["error"] else rep["final_url"]
-            print(
-                f"{rep['site']:<20} {rep['secs']:<6} "
-                f"{rep['json_requests_captured']:<7} {rep['odds_candidate_requests']:<9} "
-                f"{status_or_url}"
-            )
+        browser = await p.chromium.launch(**launch_kwargs)
+        try:
+            tasks = [probe_site(browser, site, sem) for site in SITES]
+            site_reports = await asyncio.gather(*tasks)
+        finally:
+            try:
+                await asyncio.wait_for(browser.close(), timeout=10.0)
+            except Exception:
+                pass
 
     summary = {
         "run_at": run_ts,
@@ -349,7 +372,7 @@ async def main() -> None:
     }
 
     (OUT_DIR / "xhr_summary.json").write_text(json.dumps(summary, indent=2), encoding="utf-8")
-    print(f"\nSaved summary to {OUT_DIR / 'xhr_summary.json'}")
+    print(f"\nSaved summary to {OUT_DIR / 'xhr_summary.json'}", flush=True)
 
 
 if __name__ == "__main__":
