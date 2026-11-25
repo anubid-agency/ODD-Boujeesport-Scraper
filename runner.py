@@ -201,8 +201,8 @@ def extract_matches_from_payload(source: str, raw_body: Any, fetched_at: str) ->
     return matches
 
 
-def extract_ababet_html(raw_body: Any, fetched_at: str) -> List[Dict[str, Any]]:
-    """Lightweight HTML fallback parser for AbaBet-style match/event blocks."""
+def extract_html_matches(source: str, raw_body: Any, fetched_at: str) -> List[Dict[str, Any]]:
+    """Lightweight HTML match-pair extractor for HTML pages or SSR shells."""
     _, html_text = parse_json_or_html_body(raw_body)
     if not html_text or len(html_text) < 200:
         return []
@@ -214,7 +214,7 @@ def extract_ababet_html(raw_body: Any, fetched_at: str) -> List[Dict[str, Any]]:
         if not home or not away or home.lower() == away.lower():
             continue
         rec = normalize_match(
-            source="ababet",
+            source=source,
             home=home,
             away=away,
             sport="football",
@@ -279,7 +279,7 @@ SOURCES: List[Dict[str, Any]] = [
         "name": "ababet",
         "url": os.getenv("SOURCE_URL_ABABET", "https://ababet.ug/"),
         "prefer_browser": False,
-        "parser": "ababet_html",
+        "parser": "html_matches",
     },
     {
         "name": "kagwirawo-kbet",
@@ -295,54 +295,66 @@ SOURCES: List[Dict[str, Any]] = [
     },
     {
         "name": "semabet-d247bet",
-        "url": os.getenv("SOURCE_URL_SEMABET", ""),
+        "url": os.getenv("SOURCE_URL_SEMABET", "https://semabet.ug/"),
         "prefer_browser": False,
-        "parser": "generic_json",
+        "parser": "auto",
     },
     {
         "name": "forzza",
-        "url": os.getenv("SOURCE_URL_FORZZA", ""),
-        "prefer_browser": False,
-        "parser": "generic_json",
+        "url": os.getenv("SOURCE_URL_FORZZA", "https://forzzalogin.com/"),
+        "prefer_browser": True,
+        "parser": "auto",
     },
     {
         "name": "championbet",
-        "url": os.getenv("SOURCE_URL_CHAMPIONBET", ""),
+        "url": os.getenv("SOURCE_URL_CHAMPIONBET", "https://championbet.ug/"),
         "prefer_browser": True,
-        "parser": "generic_json",
+        "parser": "auto",
     },
     {
         "name": "betpawa",
-        "url": os.getenv("SOURCE_URL_BETPAWA", ""),
+        "url": os.getenv("SOURCE_URL_BETPAWA", "https://www.betpawa.ug/"),
         "prefer_browser": True,
-        "parser": "generic_json",
+        "parser": "auto",
     },
     {
         "name": "22bet",
-        "url": os.getenv("SOURCE_URL_22BET", ""),
+        "url": os.getenv("SOURCE_URL_22BET", "https://22bet.com/"),
         "prefer_browser": True,
-        "parser": "generic_json",
+        "parser": "auto",
     },
     {
         "name": "betika",
-        "url": os.getenv("SOURCE_URL_BETIKA", ""),
+        "url": os.getenv("SOURCE_URL_BETIKA", "https://betika.com/"),
         "prefer_browser": False,
-        "parser": "generic_json",
+        "parser": "auto",
     },
     {
         "name": "sahara-games",
-        "url": os.getenv("SOURCE_URL_SAHARA", ""),
+        "url": os.getenv("SOURCE_URL_SAHARA", "https://ug.saharagames.com/"),
         "prefer_browser": False,
-        "parser": "generic_json",
+        "parser": "auto",
     },
 ]
+
+
+def parse_by_type(source: str, parser_type: str, body: Any, fetched_at: str) -> List[Dict[str, Any]]:
+    if parser_type == "html_matches":
+        return extract_html_matches(source=source, raw_body=body, fetched_at=fetched_at)
+    if parser_type == "generic_json":
+        return extract_matches_from_payload(source=source, raw_body=body, fetched_at=fetched_at)
+    # "auto": try JSON extraction first, then HTML match-pair fallback
+    json_records = extract_matches_from_payload(source=source, raw_body=body, fetched_at=fetched_at)
+    if json_records:
+        return json_records
+    return extract_html_matches(source=source, raw_body=body, fetched_at=fetched_at)
 
 
 def run_single_source(spec: Dict[str, Any], allow_browser: bool, timeout_sec: int = 35) -> Tuple[List[Dict[str, Any]], Dict[str, Any]]:
     name = spec["name"]
     url = (spec.get("url") or "").strip()
     prefer_browser = bool(spec.get("prefer_browser", False))
-    parser_type = spec.get("parser", "generic_json")
+    parser_type = spec.get("parser", "auto")
     started = time.monotonic()
     fetched_at = utc_now_iso()
 
@@ -377,11 +389,7 @@ def run_single_source(spec: Dict[str, Any], allow_browser: bool, timeout_sec: in
             last_status_code = code
 
             if code and 200 <= code < 300:
-                if parser_type == "ababet_html":
-                    records = extract_ababet_html(body, fetched_at=fetched_at)
-                else:
-                    records = extract_matches_from_payload(source=name, raw_body=body, fetched_at=fetched_at)
-
+                records = parse_by_type(source=name, parser_type=parser_type, body=body, fetched_at=fetched_at)
                 if records:
                     return records, {
                         "source": name,
