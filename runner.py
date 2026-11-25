@@ -464,7 +464,11 @@ def main() -> None:
     per_source_timeout = int(os.getenv("PER_SOURCE_TIMEOUT_SEC", "50"))
     # Keep concurrency conservative when headless browsers are enabled to avoid runner OOM/CPU stalls
     default_workers = 2 if allow_browser else 4
-    max_workers = int(os.getenv("MAX_WORKERS", str(default_workers)))
+    raw_workers = (os.getenv("MAX_WORKERS") or "").strip()
+    try:
+        max_workers = int(raw_workers) if raw_workers else default_workers
+    except ValueError:
+        max_workers = default_workers
 
     all_matches: List[Dict[str, Any]] = []
     health_entries: List[Dict[str, Any]] = []
@@ -501,30 +505,3 @@ def main() -> None:
                     "duration_sec": None,
                     "error": f"{type(exc).__name__}: {str(exc)[:180]}",
                     "updated_at": utc_now_iso(),
-                })
-
-    health_entries.sort(key=lambda item: item["source"])
-
-    with matches_path.open("w", encoding="utf-8") as mf:
-        for row in all_matches:
-            mf.write(json.dumps(row, ensure_ascii=False) + "\n")
-
-    ok_sources = [h for h in health_entries if h["status"] == "ok"]
-    health_payload = {
-        "generated_at": utc_now_iso(),
-        "browser_fallback_enabled": allow_browser,
-        "total_sources": len(health_entries),
-        "working_sources": len(ok_sources),
-        "total_matches": len(all_matches),
-        "sources": health_entries,
-    }
-    health_path.write_text(json.dumps(health_payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-
-    print(
-        f"Done: {len(ok_sources)}/{len(health_entries)} sources ok | "
-        f"{len(all_matches)} total matches -> {matches_path}, {health_path}"
-    )
-
-
-if __name__ == "__main__":
-    main()
