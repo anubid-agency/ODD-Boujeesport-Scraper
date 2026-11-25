@@ -8,7 +8,7 @@ to write out/matches.jsonl and out/health.json.
 
 from __future__ import annotations
 
-from concurrent.futures import ThreadPoolExecutor, TimeoutError as FuturesTimeoutError
+from concurrent.futures import FIRST_COMPLETED, ThreadPoolExecutor, wait
 from datetime import datetime, timezone
 import hashlib
 import json
@@ -61,6 +61,14 @@ def parse_json_or_html_body(raw_body: Any) -> Tuple[Optional[Any], str]:
         except json.JSONDecodeError:
             return None, text
     return None, text
+
+
+def _unwrap_label(val: Any) -> Any:
+    if isinstance(val, dict):
+        for key in ("name", "title", "label", "teamName", "team_name"):
+            if val.get(key):
+                return val.get(key)
+    return val
 
 
 def normalize_match(
@@ -125,11 +133,11 @@ def extract_matches_from_payload(source: str, raw_body: Any, fetched_at: str) ->
     ) -> None:
         rec = normalize_match(
             source=source,
-            home=str(home or ""),
-            away=str(away or ""),
-            sport=str(sport or "football"),
-            league=str(league or ""),
-            start_time=str(start_time) if start_time else None,
+            home=str(_unwrap_label(home) or ""),
+            away=str(_unwrap_label(away) or ""),
+            sport=str(_unwrap_label(sport) or "football"),
+            league=str(_unwrap_label(league) or ""),
+            start_time=str(start_time) if start_time is not None else None,
             is_live=bool(is_live),
             markets=markets if isinstance(markets, dict) else {},
             event_id=str(event_id) if event_id is not None else None,
@@ -146,33 +154,34 @@ def extract_matches_from_payload(source: str, raw_body: Any, fetched_at: str) ->
         if depth > 7 or node is None:
             return
         if isinstance(node, dict):
-            sport_val = node.get("sportName") or node.get("sport_name") or node.get("sport") or ctx_sport
-            if isinstance(sport_val, dict):
-                sport_val = sport_val.get("name") or ctx_sport
-            league_val = (
+            sport_val = _unwrap_label(
+                node.get("sportName") or node.get("sport_name") or node.get("sport") or ctx_sport
+            )
+            league_val = _unwrap_label(
                 node.get("league")
                 or node.get("leagueName")
                 or node.get("competition")
                 or node.get("tournament")
                 or ctx_league
             )
-            if isinstance(league_val, dict):
-                league_val = league_val.get("name") or ctx_league
 
-            home = node.get("home_team") or node.get("homeTeam") or node.get("home") or node.get("team1")
-            away = node.get("away_team") or node.get("awayTeam") or node.get("away") or node.get("team2")
+            home = _unwrap_label(
+                node.get("home_team") or node.get("homeTeam") or node.get("home") or node.get("team1")
+            )
+            away = _unwrap_label(
+                node.get("away_team") or node.get("awayTeam") or node.get("away") or node.get("team2")
+            )
 
             if not (home and away):
                 comps = node.get("competitors") or node.get("teams")
                 if isinstance(comps, list) and len(comps) >= 2:
-                    c0, c1 = comps[0], comps[1]
-                    home = c0.get("name") if isinstance(c0, dict) else c0
-                    away = c1.get("name") if isinstance(c1, dict) else c1
+                    home = _unwrap_label(comps[0])
+                    away = _unwrap_label(comps[1])
 
             if not (home and away):
                 title = node.get("name") or node.get("matchName") or node.get("eventName")
                 if isinstance(title, str):
-                    parts = re.split(r"\s+(?:vs\.?|v|-)\s+", title, maxsplit=1)
+                    parts = re.split(r"\s+(?:vs\.?|v|[-–—])\s+", title, maxsplit=1)
                     if len(parts) == 2 and all(len(p.strip()) > 1 for p in parts):
                         home, away = parts[0].strip(), parts[1].strip()
 
@@ -215,7 +224,7 @@ def extract_html_matches(source: str, raw_body: Any, fetched_at: str) -> List[Di
         return []
     matches: List[Dict[str, Any]] = []
     seen = set()
-    for m in re.finditer(r">([^<]{2,45}?)\s+(?:vs\.?|[-–])\s+([^<]{2,45}?)<", html_text):
+    for m in re.finditer(r">([^<]{2,45}?)\s+(?:vs\.?|[-–—])\s+([^<]{2,45}?)<", html_text):
         home = re.sub(r"\s+", " ", m.group(1)).strip()
         away = re.sub(r"\s+", " ", m.group(2)).strip()
         if not home or not away or home.lower() == away.lower():
@@ -361,7 +370,9 @@ def parse_by_type(source: str, parser_type: str, body: Any, fetched_at: str) -> 
     return extract_html_matches(source=source, raw_body=body, fetched_at=fetched_at)
 
 
-def run_single_source(spec: Dict[str, Any], allow_browser: bool, default_timeout_sec: int = 35) -> Tuple[List[Dict[str, Any]], Dict[str, Any]]:
+def run_single_source(
+    spec: Dict[str, Any], allow_browser: bool, default_timeout_sec: int = 35
+) -> Tuple[List[Dict[str, Any]], Dict[str, Any]]:
     name = spec["name"]
     url = (spec.get("url") or "").strip()
     prefer_browser = bool(spec.get("prefer_browser", False))
@@ -385,6 +396,7 @@ def run_single_source(spec: Dict[str, Any], allow_browser: bool, default_timeout
     attempts: List[Tuple[str, bool]] = []
     if prefer_browser and allow_browser:
         attempts.append(("browser", True))
+        attempts.append(("http", False))
     else:
         attempts.append(("http", False))
         if allow_browser:
@@ -393,6 +405,7 @@ def run_single_source(spec: Dict[str, Any], allow_browser: bool, default_timeout
     last_status_code: Optional[int] = None
     last_error = "Unknown fetch error"
     last_mode = attempts[0][0]
+    saw_metadata = False
 
     for mode, use_browser in attempts:
         last_mode = mode
@@ -415,32 +428,27 @@ def run_single_source(spec: Dict[str, Any], allow_browser: bool, default_timeout
                     }
 
                 last_error = "HTTP 200 received but zero normalized matches extracted (empty or non-event payload)"
-                if not use_browser and allow_browser:
-                    continue
-
-                return [], {
-                    "source": name,
-                    "status": "empty_feed",
-                    "mode": mode,
-                    "http_status": code,
-                    "match_count": 0,
-                    "duration_sec": round(time.monotonic() - started, 2),
-                    "error": last_error,
-                    "updated_at": fetched_at,
-                }
+                continue
 
             last_error = f"HTTP {code}"
-            if code in (403, 429, 521) and not use_browser and allow_browser:
-                continue
+            continue
 
         except Exception as exc:
-            last_error = f"{type(exc).__name__}: {str(exc)[:180]}"
-            if not use_browser and allow_browser:
-                continue
+            last_status_code = None
+            msg = f"{type(exc).__name__}: {str(exc)[:180]}"
+            last_error = msg
+            if "metadata" in msg.lower():
+                saw_metadata = True
+            continue
 
-    status_label = classify_http_failure(last_status_code or 0) if last_status_code else "error"
-    if "metadata" in last_error.lower():
+    if saw_metadata:
         status_label = "metadata_only"
+    elif last_status_code is not None:
+        status_label = classify_http_failure(last_status_code)
+    elif "zero normalized matches" in last_error.lower():
+        status_label = "empty_feed"
+    else:
+        status_label = "error"
 
     return [], {
         "source": name,
@@ -454,6 +462,16 @@ def run_single_source(spec: Dict[str, Any], allow_browser: bool, default_timeout
     }
 
 
+def _parse_int_env(name: str, default: int) -> int:
+    raw = (os.getenv(name) or "").strip()
+    if not raw:
+        return default
+    try:
+        return int(raw)
+    except ValueError:
+        return default
+
+
 def main() -> None:
     out_dir = Path(os.getenv("OUTPUT_DIR", "out"))
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -461,32 +479,53 @@ def main() -> None:
     health_path = out_dir / "health.json"
 
     allow_browser = os.getenv("RUN_BROWSER", "false").strip().lower() in ("1", "true", "yes")
-    per_source_timeout = int(os.getenv("PER_SOURCE_TIMEOUT_SEC", "50"))
-    # Keep concurrency conservative when headless browsers are enabled to avoid runner OOM/CPU stalls
+    per_source_timeout = _parse_int_env("PER_SOURCE_TIMEOUT_SEC", 50)
     default_workers = 2 if allow_browser else 4
-    raw_workers = (os.getenv("MAX_WORKERS") or "").strip()
-    try:
-        max_workers = int(raw_workers) if raw_workers else default_workers
-    except ValueError:
-        max_workers = default_workers
+    max_workers = max(1, _parse_int_env("MAX_WORKERS", default_workers))
 
     all_matches: List[Dict[str, Any]] = []
     health_entries: List[Dict[str, Any]] = []
 
-    with ThreadPoolExecutor(max_workers=max(1, max_workers)) as pool:
-        future_map = {
-            pool.submit(run_single_source, spec, allow_browser, per_source_timeout): spec
-            for spec in SOURCES
-        }
-        for future, spec in future_map.items():
-            src_name = spec["name"]
-            try:
-                records, health = future.result(timeout=per_source_timeout)
-                all_matches.extend(records)
-                health_entries.append(health)
-            except FuturesTimeoutError:
+    pool = ThreadPoolExecutor(max_workers=max_workers)
+    try:
+        start_times = {}
+        future_to_spec = {}
+        for spec in SOURCES:
+            fut = pool.submit(run_single_source, spec, allow_browser, per_source_timeout)
+            future_to_spec[fut] = spec
+            start_times[fut] = time.monotonic()
+
+        pending = set(future_to_spec.keys())
+        while pending:
+            done, pending = wait(pending, timeout=0.5, return_when=FIRST_COMPLETED)
+            now = time.monotonic()
+
+            for fut in done:
+                spec = future_to_spec[fut]
+                src_name = spec["name"]
+                try:
+                    records, health = fut.result(timeout=0)
+                    all_matches.extend(records)
+                    health_entries.append(health)
+                except Exception as exc:
+                    health_entries.append({
+                        "source": src_name,
+                        "status": "crashed",
+                        "mode": "browser" if allow_browser else "http",
+                        "http_status": None,
+                        "match_count": 0,
+                        "duration_sec": round(now - start_times[fut], 2),
+                        "error": f"{type(exc).__name__}: {str(exc)[:180]}",
+                        "updated_at": utc_now_iso(),
+                    })
+
+            timed_out = [fut for fut in pending if (now - start_times[fut]) >= per_source_timeout]
+            for fut in timed_out:
+                pending.remove(fut)
+                fut.cancel()
+                spec = future_to_spec[fut]
                 health_entries.append({
-                    "source": src_name,
+                    "source": spec["name"],
                     "status": "timeout",
                     "mode": "browser" if allow_browser else "http",
                     "http_status": None,
@@ -495,17 +534,8 @@ def main() -> None:
                     "error": f"Source timed out after {per_source_timeout}s",
                     "updated_at": utc_now_iso(),
                 })
-            except Exception as exc:
-                health_entries.append({
-                    "source": src_name,
-                    "status": "crashed",
-                    "mode": "browser" if allow_browser else "http",
-                    "http_status": None,
-                    "match_count": 0,
-                    "duration_sec": None,
-                    "error": f"{type(exc).__name__}: {str(exc)[:180]}",
-                    "updated_at": utc_now_iso(),
-                })
+    finally:
+        pool.shutdown(wait=False, cancel_futures=True)
 
     health_entries.sort(key=lambda item: item["source"])
 
