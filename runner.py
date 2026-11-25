@@ -526,3 +526,9 @@ def main() -> None:
 
     print(
         f"Done: {len(ok_sources)}/{len(health_entries)} sources ok | "
+        f"{len(all_matches)} total matches -> {matches_path}, {health_path}"
+    )
+
+
+if __name__ == "__main__":
+    main()
