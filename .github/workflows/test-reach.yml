@@ -1,7 +1,7 @@
 name: Test Bookmaker Reach
 
 on:
-  workflow_dispatch: # run by hand from the Actions tab
+  workflow_dispatch:
 
 jobs:
   test-reach:
@@ -15,18 +15,19 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: "3.12"
 
       - name: Install Scrapling & Dependencies
         run: |
           python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
           pip install "scrapling[fetchers]" lxml
           scrapling install
-          playwright install --with-deps chromium
-          patchright install chromium
 
       - name: Run reachability test
         continue-on-error: true
+        env:
+          BOOKMAKER_PROXY: ${{ secrets.BOOKMAKER_PROXY }}
         run: python test_reach.py
 
       - name: Upload results
