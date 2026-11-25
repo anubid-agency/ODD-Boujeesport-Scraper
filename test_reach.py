@@ -64,8 +64,21 @@ BATCH_2 = {
     "Sahara Games": "https://saharagames.com/",
 }
 
-# Which batch to test. Default is batch 2. Set the env var SITES_BATCH=1 for batch 1.
-SITES = BATCH_1 if os.environ.get("SITES_BATCH", "2").strip() == "1" else BATCH_2
+# Batch 3: corrected addresses supplied by the owner (re-test of batch 2 failures).
+# SemaBet and Forzza each list a backup address, in case the first one fails.
+# SmartBet dropped (no official site). UgandaBet and BetPaka still need real URLs.
+BATCH_3 = {
+    "Sahara Games":    "https://ug.saharagames.com/",
+    "SemaBet":         "https://semabet.com/",
+    "SemaBet (.ug)":   "https://www.semabet.ug/",
+    "Forzza":          "https://forzza1.com/",
+    "Forzza (mobile)": "https://m.forzza1.com/",
+}
+
+# Which batch to test. Default is batch 3.
+# Set the env var SITES_BATCH to 1 or 2 to re-run the older batches.
+_BATCHES = {"1": BATCH_1, "2": BATCH_2, "3": BATCH_3}
+SITES = _BATCHES.get(os.environ.get("SITES_BATCH", "3").strip(), BATCH_3)
 
 PROXY = (os.environ.get("BOOKMAKER_PROXY") or "").strip() or None
 
