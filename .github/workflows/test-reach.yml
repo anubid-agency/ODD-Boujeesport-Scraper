@@ -1,0 +1,37 @@
+name: Test Bookmaker Reach
+
+on:
+  workflow_dispatch: # run by hand from the Actions tab
+
+jobs:
+  test-reach:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Scrapling & Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install "scrapling[fetchers]" lxml
+          scrapling install
+
+      - name: Run reachability test
+        continue-on-error: true
+        run: python test_reach.py
+
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reach-results
+          path: results.json
+          retention-days: 7
+          if-no-files-found: ignore
