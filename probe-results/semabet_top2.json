@@ -1,0 +1,8 @@
+{
+  "site": "SemaBet",
+  "url": "https://d247bet.ug/en/sport/prematch/upcoming?_rsc=MK_GKcz2ukeqhX_R",
+  "method": "GET",
+  "post_data": null,
+  "score": 9,
+  "body": "0:{\"f\":[[[\"\",{\"children\":[[\"lang\",\"en\",\"d\",[\"%5Fbuild-id\",\".well-known\",\"api\",\"auth\",\"documents\",\"i18n-base\",\"llm.html\",\"llms.txt\",\"offline\",\"robots.txt\",\"site.webmanifest\",\"sitemap.xml\",\"sitemap_casino_categories.xml\",\"sitemap_casino_games.xml\",\"sitemap_casino_providers.xml\",\"sitemap_events.xml\",\"sitemap_info.xml\",\"sitemap_leagues.xml\",\"sitemap_pages.xml\",\"slots\"]],{\"children\":[\"(sport)\",{\"children\":[\"sport\",{\"children\":[\"prematch\",{\"children\":[\"upcoming\",{\"children\":[\"__PAGE__\",{},\"$undefined\",\"$undefined\",4096]},\"$undefined\",\"$undefined\",4096]},\"$undefined\",\"$undefined\",4096]},\"$undefined\",\"$undefined\",4096]},\"$undefined\",\"$undefined\",4096]},\"$undefined\",\"$undefined\",4096]},\"$undefined\",\"$undefined\",4112],null,[null,null],true]],\"q\":\"\",\"i\":false,\"S\":false,\"h\":null,\"r\":\"$undefined\",\"b\":\"365669ea89ba\"}\n"
+}

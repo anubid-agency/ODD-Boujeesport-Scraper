@@ -1,0 +1,1217 @@
+{
+  "run_at": "2026-11-26T03:47:47.092639+00:00",
+  "engine": "patchright",
+  "sites": [
+    {
+      "name": "Forzza",
+      "url": "https://forzza1.com/",
+      "ok": true,
+      "error": null,
+      "final_url": "https://forzza1.com/en/sport-betting?sportId=1&sportCategoryId=393&tournamentId=151681",
+      "candidates": [
+        {
+          "method": "GET",
+          "url": "https://forzza1.com/zz-api/v2/sport/offers/match/top",
+          "status": 200,
+          "content_type": "application/json; charset=utf-8",
+          "size": 97165,
+          "is_json": true,
+          "score": 69,
+          "post_data": null,
+          "custom_header_names": [
+            "authorization",
+            "referer"
+          ],
+          "sample": "{\r\n  \"bettingTypes\": [\r\n    {\r\n      \"bettingTypeGroupId\": 1,\r\n      \"count\": 25,\r\n      \"description\": \"You are betting on the outcome of regular time of the match; 1 - home team wins, X - draw; 2 - away team wins.\",\r\n      \"id\": 10,\r\n      \"isSelected\": true,\r\n      \"name\": \"3-way\",\r\n      \"sortOrder\": 5\r\n    },\r\n    {\r\n      \"bettingTypeGroupId\": 1,\r\n      \"count\": 25,\r\n      \"description\": \"You are betting on the double outcome of the match in regular time. 1X - means that either the home te"
+        },
+        {
+          "method": "POST",
+          "url": "https://forzza1.com/zz-api/v2/sport/offers/match",
+          "status": 200,
+          "content_type": "application/json; charset=utf-8",
+          "size": 77151,
+          "is_json": true,
+          "score": 57,
+          "post_data": "{\"offerFilterPeriod\":0,\"tournamentIds\":[151681],\"sportId\":1,\"primaryBettingTypeId\":null}",
+          "custom_header_names": [
+            "authorization",
+            "content-type",
+            "referer"
+          ],
+          "sample": "{\r\n  \"bettingTypes\": [\r\n    {\r\n      \"bettingTypeGroupId\": 1,\r\n      \"count\": 18,\r\n      \"description\": \"You are betting on the outcome of regular time of the match; 1 - home team wins, X - draw; 2 - away team wins.\",\r\n      \"id\": 10,\r\n      \"isSelected\": true,\r\n      \"name\": \"3-way\",\r\n      \"sortOrder\": 5\r\n    },\r\n    {\r\n      \"bettingTypeGroupId\": 1,\r\n      \"count\": 18,\r\n      \"description\": \"You are betting on the double outcome of the match in regular time. 1X - means that either the home te"
+        },
+        {
+          "method": "GET",
+          "url": "https://forzza1.com/zz-api/v2/core/bet-slips/most-played",
+          "status": 200,
+          "content_type": "application/json; charset=utf-8",
+          "size": 52477,
+          "is_json": true,
+          "score": 31,
+          "post_data": null,
+          "custom_header_names": [
+            "authorization",
+            "referer"
+          ],
+          "sample": "[\r\n  {\r\n    \"betSlipCount\": 10,\r\n    \"combinationHash\": \"4E1005861798B6FC5B7419C307021FFBA71D02558771D5939A04D225966ACD9B\",\r\n    \"matchOffers\": [\r\n      {\r\n        \"awayTeam\": {\r\n          \"id\": 60,\r\n          \"name\": \"AFC Bournemouth\",\r\n          \"superId\": 0,\r\n          \"teamJersey\": {\r\n            \"borderColorType\": 0,\r\n            \"color1\": \"#E55555\",\r\n            \"color2\": \"#616161\",\r\n            \"color3\": null,\r\n            \"color4\": null,\r\n            \"countryIconName\": null,\r\n           "
+        },
+        {
+          "method": "GET",
+          "url": "https://forzza1.com/locales/en/translation.json?v=2.22.2",
+          "status": 200,
+          "content_type": "application/json",
+          "size": 34712,
+          "is_json": true,
+          "score": 18,
+          "post_data": null,
+          "custom_header_names": [
+            "referer"
+          ],
+          "sample": "{\r\n    \"form\": {\r\n        \"field\": {\r\n            \"firstName\": \"First name\",\r\n            \"lastName\": \"Last name\",\r\n            \"username\": \"Username\",\r\n            \"emailAddressOrUsername\": \"Email address or username\",\r\n            \"emailAddress\": \"E-mail address\",\r\n            \"title\": \"Title\",\r\n            \"dateOfBirth\": \"Date of birth\",\r\n            \"country\": \"Country\",\r\n            \"password\": \"Password\",\r\n            \"repeatPassword\": \"Repeat password\",\r\n            \"street\": \"Street\",\r\n "
+        },
+        {
+          "method": "GET",
+          "url": "https://forzza1.com/zz-api/v2/sport/offers/sport-menu?offerFilterPeriod=0",
+          "status": 200,
+          "content_type": "application/json; charset=utf-8",
+          "size": 158888,
+          "is_json": true,
+          "score": 6,
+          "post_data": null,
+          "custom_header_names": [
+            "authorization",
+            "referer"
+          ],
+          "sample": "[\r\n  {\r\n    \"id\": 1,\r\n    \"matchCount\": 1194,\r\n    \"name\": \"Soccer\",\r\n    \"sportCategories\": [\r\n      {\r\n        \"iconName\": \"international\",\r\n        \"id\": 393,\r\n        \"matchCount\": 57,\r\n        \"name\": \"International Clubs\",\r\n        \"sportId\": 1,\r\n        \"tournaments\": [\r\n          {\r\n            \"iconName\": null,\r\n            \"id\": 151681,\r\n            \"matchCount\": 18,\r\n            \"matches\": null,\r\n            \"name\": \"UEFA Europa League\",\r\n            \"sportCategoryId\": 393,\r\n         "
+        },
+        {
+          "method": "GET",
+          "url": "https://forzza1.com/zz-api/v2/casino/casino-offers/lobby?excludeTopGames=false&excludeFavoriteGames=false&excludeNewGames=true&favoriteGameIds=",
+          "status": 200,
+          "content_type": "application/json; charset=utf-8",
+          "size": 10894,
+          "is_json": true,
+          "score": 3,
+          "post_data": null,
+          "custom_header_names": [
+            "authorization",
+            "referer"
+          ],
+          "sample": "{\r\n  \"newGames\": null,\r\n  \"topGames\": [\r\n    {\r\n      \"casinoBrandId\": 4,\r\n      \"casinoGameCategoryId\": 9,\r\n      \"casinoPlatformType\": 1,\r\n      \"casinoProviderId\": 4,\r\n      \"dateCreated\": \"2025-02-07T17:25:16Z\",\r\n      \"id\": 2445,\r\n      \"isDemoAvailable\": true,\r\n      \"isNew\": false,\r\n      \"isTop\": true,\r\n      \"launchMode\": 1,\r\n      \"loadMode\": 0,\r\n      \"name\": \"Spaceman\",\r\n      \"providerCasinoGameId\": \"1301\",\r\n      \"thumbnail\": \"Spaceman.png\"\r\n    },\r\n    {\r\n      \"casinoBrandId\": 3,"
+        },
+        {
+          "method": "GET",
+          "url": "https://forzza1.com/zz-api/v2/core/client-app-domain-settings",
+          "status": 200,
+          "content_type": "application/json; charset=utf-8",
+          "size": 2765,
+          "is_json": true,
+          "score": 0,
+          "post_data": null,
+          "custom_header_names": [
+            "authorization",
+            "referer"
+          ],
+          "sample": "{\r\n  \"bettingLimit\": {\r\n    \"defaultBetSlipStake\": 5.0,\r\n    \"minStakePerBetSlip\": 1.0\r\n  },\r\n  \"companyDomain\": {\r\n    \"companyId\": 2,\r\n    \"defaultCurrencyCode\": \"\",\r\n    \"domainName\": \"forzza1.com\",\r\n    \"footerConfig\": {\r\n      \"ageRestrictionImg\": \"https://static.forzza1.com/zz/footer/age-restriction-18-red.png\",\r\n      \"companyLinks\": [\r\n        {\r\n          \"external\": null,\r\n          \"route\": \"/info/about-us\",\r\n          \"title\": \"footer.aboutUs\"\r\n        },\r\n        {\r\n          \"exter"
+        }
+      ],
+      "websockets": [],
+      "seconds": 26.6,
+      "responses_seen": 9
+    },
+    {
+      "name": "Sahara Games",
+      "url": "https://ug.saharagames.com/",
+      "ok": true,
+      "error": null,
+      "final_url": "https://ug.saharagames.com/?s=1&c=&l=&f=1&flt=100",
+      "candidates": [
+        {
+          "method": "POST",
+          "url": "https://ug.saharagames.com/Sports.aspx/GetSportMarketsOnScrolling",
+          "status": 200,
+          "content_type": "application/json; charset=utf-8",
+          "size": 153571,
+          "is_json": true,
+          "score": 87,
+          "post_data": "{\"scrollPageIndex\":0}",
+          "custom_header_names": [
+            "content-type",
+            "referer",
+            "x-requested-with"
+          ],
+          "sample": "{\"d\":\"\\u003cdiv id=\\u0027dvRowOdds\\u0027\\u003e\\r\\n\\t\\u003cdiv id=\\u0027ContentPlaceHolder1_rptMainMarketGames_divGroup_0\\u0027 class=\\u0027ng-animate-enabled ng-app-slide-animation event-set-info-row-container ng-scope\\u0027 style=\\u0027display: block;\\u0027\\u003e\\r\\n\\t\\t\\u003cdiv class=\\u0027league-row\\u0027\\u003e\\r\\n\\t\\t\\t\\u003cdiv class=\\u0027event-text ng-binding groupname\\u0027 style=\\u0027display: flex;\\u0027\\u003e\\r\\n\\t\\t\\t\\t\\u003ci id=\\u0027ContentPlaceHolder1_rptMainMarketGames_iflag_20"
+        },
+        {
+          "method": "POST",
+          "url": "https://ug.saharagames.com/Sports.aspx/GetSportMarkets",
+          "status": 200,
+          "content_type": "application/json; charset=utf-8",
+          "size": 37263,
+          "is_json": true,
+          "score": 81,
+          "post_data": "{\"sportid\":\"1\",\"countryid\":\"\",\"leagueid\":\"\",\"isfeatured\":\"1\",\"searchteam\":0,\"filter\":\"100\"}",
+          "custom_header_names": [
+            "content-type",
+            "referer",
+            "x-requested-with"
+          ],
+          "sample": "{\"d\":\"[{\\\"CountryID\\\":0,\\\"countryid\\\":680,\\\"CountryName\\\":\\\"Intl\\\",\\\"country_code\\\":\\\"INT\\\",\\\"sportID\\\":1,\\\"gameid\\\":7210914,\\\"gamestatus\\\":0,\\\"LeagueID\\\":1007,\\\"ID\\\":7142,\\\"LeagueName\\\":\\\"Europaleague\\\",\\\"isTopLeague\\\":false,\\\"hometeamid\\\":10829,\\\"hometeam\\\":\\\"Olympiacos Piraeus\\\",\\\"awayteamid\\\":11938,\\\"awayteam\\\":\\\"AC Milan\\\",\\\"gamename\\\":\\\"Olympiacos Piraeus vs. AC Milan\\\",\\\"homescore\\\":\\\"0.00\\\",\\\"awayscore\\\":\\\"0.00\\\",\\\"time\\\":null,\\\"period\\\":null,\\\"starttime\\\":\\\"2026-11-26T17:45:00\\\",\\\"endti"
+        },
+        {
+          "method": "GET",
+          "url": "https://ug.saharagames.com/Content/lng/en.json",
+          "status": 200,
+          "content_type": "application/json",
+          "size": 4159,
+          "is_json": true,
+          "score": 9,
+          "post_data": null,
+          "custom_header_names": [
+            "referer"
+          ],
+          "sample": "{\r\n  \"login\": \"LOGIN\",\r\n  \"register\": \"REGISTER\",\r\n  \"sports\": \"Sports\",\r\n  \"livegames\": \"Live\",\r\n  \"aviator\": \"Aviator\",\r\n  \"crashgames\": \"Crash\",\r\n  \"betslip\": \"Betslip\",\r\n  \"BookingCode\": \"Load Booking Code\",\r\n  \"emptybetslip\": \"Your betslip is currently empty\",\r\n  \"firstbet\": \"Click to add your first bet\",\r\n  \"load\": \"Load\",\r\n  \"check\": \"Check\",\r\n  \"all\": \"All\",\r\n  \"today\": \"Today\",\r\n  \"tomorrow\": \"Tomorrow\",\r\n  \"virtual\": \"Virtual\",\r\n  \"livecasino\": \"Live Casino\",\r\n  \"tablegames\": \"Table\",\r"
+        },
+        {
+          "method": "GET",
+          "url": "https://embed.tawk.to/_s/v4/app/6afcff7b9f0/languages/en_dev.json",
+          "status": 200,
+          "content_type": "application/json",
+          "size": 10588,
+          "is_json": true,
+          "score": 6,
+          "post_data": null,
+          "custom_header_names": [
+            "referer"
+          ],
+          "sample": "{\n\t\"bubble\": {\n\t\t\"attention_grabber\": \"Chat attention grabber\"\n\t},\n\t\"chat\": {\n\t\t\"accept_call\": \"Accept\",\n\t\t\"active\": \"Active\",\n\t\t\"agent_is_typing\": \"Agent is typing\",\n\t\t\"agent_profile_image\": \"Agent profile image\",\n\t\t\"agent_ringing\": \"Incoming Call\",\n\t\t\"all_conversations\": \"See all conversations\",\n\t\t\"call_end_details\": \"Started at {{ startedOn }} and lasted {{ duration }}\",\n\t\t\"call_error_load\": \"Unable to load call details.\",\n\t\t\"call_started_on\": \"Started at {{ startedOn }}\",\n\t\t\"chat_ended\": \"Yo"
+        },
+        {
+          "method": "GET",
+          "url": "https://embed.tawk.to/_s/v4/app/6afcff7b9f0/languages/en.json",
+          "status": 200,
+          "content_type": "application/json",
+          "size": 11849,
+          "is_json": true,
+          "score": 6,
+          "post_data": null,
+          "custom_header_names": [
+            "referer"
+          ],
+          "sample": "{\n    \"bubble\": {\n        \"attention_grabber\": \"Chat attention grabber\"\n    },\n    \"chat\": {\n        \"accept_call\": \"Accept\",\n        \"active\": \"Active\",\n        \"agent_is_typing\": \"Agent is typing\",\n        \"agent_profile_image\": \"Agent profile image\",\n        \"agent_ringing\": \"Incoming Call\",\n        \"all_conversations\": \"See all conversations\",\n        \"call_end_details\": \"Started at {{ startedOn }} and lasted {{ duration }}\",\n        \"call_error_load\": \"Unable to load call details.\",\n       "
+        },
+        {
+          "method": "GET",
+          "url": "https://va.tawk.to/v1/widget-settings?propertyId=5f46aca3cc6a6a5947af1448&widgetId=default&sv=null",
+          "status": 200,
+          "content_type": "application/json",
+          "size": 3042,
+          "is_json": true,
+          "score": 6,
+          "post_data": null,
+          "custom_header_names": [
+            "referer"
+          ],
+          "sample": "{\"ok\":true,\"data\":{\"settingsVersion\":\"2-26-0\",\"propertyName\":\"Sahara Games Uganda\",\"branding\":{\"whitelabeled\":false,\"text\":\":tawky: Add free *live chat* to your site\",\"url\":\"https://www.tawk.to/?utm_source=tawk-messenger&utm_medium=link&utm_campaign=referral&utm_term=5f46aca3cc6a6a5947af1448\"},\"widget\":{\"type\":\"inline\",\"version\":26,\"agentDrivenStatus\":false,\"language\":\"en\",\"minimized\":{\"desktop\":{\"type\":\"round\"},\"mobile\":{\"type\":\"round\"}},\"maximized\":{\"desktop\":{\"height\":520,\"width\":350}},\"theme"
+        },
+        {
+          "method": "GET",
+          "url": "https://embed.tawk.to/_s/v4/assets/audio/chat_sound.mp3",
+          "status": 200,
+          "content_type": "audio/mpeg",
+          "size": 6687,
+          "is_json": false,
+          "score": 1,
+          "post_data": null,
+          "custom_header_names": [
+            "referer"
+          ],
+          "sample": "����\u0000\u0002S�\b�!\u0004�\u0012�A��d�(@\u0000\u0014[ô�ɦM3\b\u0010�=3\b\u0010����\u0010C?���\f�˿�39�N�Y\u0004�2��\u0010,�=1\u000f��\u0018��\u0010 �\u000eL����\u001eN��,�ǶL�\u0018L-6���a}�X�\u000f�؀Zw��}��\u0004 �_��\u001a\"���!\u0004ɦ�\b\u0010A��y:��\"#\"I�\u0010@�\f?o��{&C/��\b x8]ݞ���=шk�\t&OD�\rBG�,\u0004�D!n+i�'�%�\u000b�KQ�I�!\u0002����ئQa��eSk\u0002*\u001b!\u0013\u0001e��\fx��\u0019Z���_\u0006��5Nk#\u0016c�&�\u0017\u001b�\u00066��J�(�����RI��\u0014�\"�ؼ׵\u0016�.���ΖO���rŵɑ���s\u001ešG����b\n\u000b\u0011��Y� �F�Jcn���K�h\u0017�i8Ա��\f���R�1��E���`\u000e\u0010e*/)@hu��R���6�(\u0012\f�#p��#�G����\u001c���<3|�z\u0011W\\\u001f\u001d�*(v\u0015�#���\u0014M���_J���� �\u001c�\f�5�\u0000\u0003Vũ?7@\u0002xO?Q�g\be�**:f~p`��\u0017�~R��\u0014/\u0016\u0019�\"\u001d���{\u001c\u0007*�\t�)\u0015������3�~yhDs�+�X>?kP�\u0018��G��_&2��-���:�"
+        },
+        {
+          "method": "GET",
+          "url": "https://ug.saharagames.com/signalr/negotiate?clientProtocol=1.5&connectionData=%5B%7B%22name%22%3A%22sportshub%22%7D%5D&_=1795664706673",
+          "status": 200,
+          "content_type": "application/json; charset=UTF-8",
+          "size": 391,
+          "is_json": true,
+          "score": 0,
+          "post_data": null,
+          "custom_header_names": [
+            "content-type",
+            "referer",
+            "x-requested-with"
+          ],
+          "sample": "{\"Url\":\"/signalr\",\"ConnectionToken\":\"UKL4hgsrQYP9jblqKteMKp059+G6ZFATX5oWXrQPzC/YYgRbVOb4qI6o0IxV1Rlp7uQPopUojxJZoV0cgvJcdzUryFLQibnL2Abmf/q1kYKgAq2YvmFavKfJ3+f2HWl+\",\"ConnectionId\":\"e707f865-e0f8-424c-bd28-9600e529779f\",\"KeepAliveTimeout\":20.0,\"DisconnectTimeout\":30.0,\"ConnectionTimeout\":110.0,\"TryWebSockets\":true,\"ProtocolVersion\":\"1.5\",\"TransportConnectTimeout\":5.0,\"LongPollDelay\":0.0}"
+        },
+        {
+          "method": "POST",
+          "url": "https://va.tawk.to/v1/session/start",
+          "status": 200,
+          "content_type": "application/json",
+          "size": 1049,
+          "is_json": true,
+          "score": 0,
+          "post_data": "{\"p\":\"5f46aca3cc6a6a5947af1448\",\"w\":\"default\",\"platform\":\"desktop\",\"tzo\":-180,\"url\":\"https://ug.saharagames.com/?s=1&c=&l=&f=1&flt=100\",\"vss\":\"\",\"consent\":false,\"wss\":\"min\",\"uik\":\"NM34xMZpMkpIaKtCZyZ8k\"}",
+          "custom_header_names": [
+            "content-type",
+            "referer"
+          ],
+          "sample": "{\"ok\":true,\"data\":{\"uid\":{\"domain\":\"saharagames.com\",\"u\":\"1.Ws8eFXkvAGCituBLHR6Z24ipoJVYf962W2fsPGL7md4zVRuaHBMPFVUEvBPfTJQjItqQL4D9m4rEoQAwWWDcXoy4TYQV0pvPjSh4W1Egap6dY74CZthFVmvMY\",\"uv\":3},\"vid\":\"5f46aca3cc6a6a5947af1448-FHIY2pKKR_QiGtOcsgkn9\",\"tkn\":\"eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InZpc2l0b3ItYXBwbGljYXRpb24tc2VydmVyLTIwMjEwMjIifQ.eyJwaWQiOiI1ZjQ2YWNhM2NjNmE2YTU5NDdhZjE0NDgiLCJ2aWQiOiI1ZjQ2YWNhM2NjNmE2YTU5NDdhZjE0NDgtRkhJWTJwS0tSX1FpR3RPY3Nna245Iiwic2lkIjoiNmIwN2FiNDUyMzQ1MTRjYzc2"
+        },
+        {
+          "method": "GET",
+          "url": "https://ug.saharagames.com/signalr/start?transport=webSockets&clientProtocol=1.5&connectionToken=[redacted]&connectionData=%5B%7B%22name%22%3A%22sportshub%22%7D%5D&_=1795664706674",
+          "status": 200,
+          "content_type": "application/json; charset=UTF-8",
+          "size": 25,
+          "is_json": true,
+          "score": 0,
+          "post_data": null,
+          "custom_header_names": [
+            "content-type",
+            "referer",
+            "x-requested-with"
+          ],
+          "sample": "{ \"Response\": \"started\" }"
+        },
+        {
+          "method": "POST",
+          "url": "https://ug.saharagames.com/Sports.aspx/getMobileCountryMenu",
+          "status": 200,
+          "content_type": "application/json; charset=utf-8",
+          "size": 6054,
+          "is_json": true,
+          "score": 0,
+          "post_data": "{\"sportid\":\"1\"}",
+          "custom_header_names": [
+            "content-type",
+            "referer",
+            "x-requested-with"
+          ],
+          "sample": "{\"d\":\"[{\\\"sportID\\\":1,\\\"countryID\\\":474,\\\"countryName\\\":\\\"England\\\",\\\"country_code\\\":\\\"ENG\\\"},{\\\"sportID\\\":1,\\\"countryID\\\":566,\\\"countryName\\\":\\\"Spain\\\",\\\"country_code\\\":\\\"ESP\\\"},{\\\"sportID\\\":1,\\\"countryID\\\":484,\\\"countryName\\\":\\\"Germany\\\",\\\"country_code\\\":\\\"DEU\\\"},{\\\"sportID\\\":1,\\\"countryID\\\":502,\\\"countryName\\\":\\\"Italy\\\",\\\"country_code\\\":\\\"ITA\\\"},{\\\"sportID\\\":1,\\\"countryID\\\":481,\\\"countryName\\\":\\\"France\\\",\\\"country_code\\\":\\\"FRA\\\"},{\\\"sportID\\\":1,\\\"countryID\\\":536,\\\"countryName\\\":\\\"Netherlands\\"
+        }
+      ],
+      "websockets": [
+        "wss://ug.saharagames.com/signalr/connect?transport=webSockets&clientProtocol=1.5&connectionToken=[redacted]&connectionData=%5B%7B%22name%22%3A%22sportshub%22%7D%5D&tid=8",
+        "wss://vsb127.tawk.to/s/?k=6b07ab45234514cc766bddcb&cver=0&pop=false&asver=0&tkn=eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InZpc2l0b3ItYXBwbGljYXRpb24tc2VydmVyLTIwMjEwMjIifQ.eyJwaWQiOiI1ZjQ2YWNhM2NjNmE2YTU5NDdhZjE0NDgiLCJ2aWQiOiI1ZjQ2YWNhM2NjNmE2YTU5NDdhZjE0NDgtRkhJWTJwS0tSX1FpR3RPY3Nna245Iiwic2lkIjoiNmIwN2FiNDUyMzQ1MTRjYzc2NmJkZGNiIiwiaWF0IjoxNzk1NjY0NzA5LCJleHAiOjE3OTU2NjY1MDksImp0aSI6IkJmYUYtQU1qMnppZ2pCa1JMU2FwViJ9.yEfg7D-db6HFxIepZ3Fy9MMCi0tq4mLgG5gs3kHRe1HqspWvyvkcIrHrEPd104WaUdJI4eNpJcY2D1_aK5iihA&EIO=3&transport=websocket&__t=Q8LzGZ2"
+      ],
+      "seconds": 27.1,
+      "responses_seen": 15
+    },
+    {
+      "name": "SemaBet",
+      "url": "https://d247bet.ug/",
+      "ok": true,
+      "error": null,
+      "final_url": "https://d247bet.ug/",
+      "candidates": [
+        {
+          "method": "GET",
+          "url": "https://d247bet.ug/en/sport/prematch/all/league/tennis/world/davis-cup?top=true&_rsc=-SAgqFnZ0-SIg6Fo",
+          "status": 200,
+          "content_type": "text/x-component",
+          "size": 7491,
+          "is_json": false,
+          "score": 12,
+          "post_data": null,
+          "custom_header_names": [
+            "referer"
+          ],
+          "sample": "1:\"$Sreact.fragment\"\n2:I[481535,[\"https://content-docs.newguys.io/fe-static/365669ea89ba74f96462f6b934af8397f60f126f/_next/static/chunks/124abluvf6lmr.js\",\"https://content-docs.newguys.io/fe-static/365669ea89ba74f96462f6b934af8397f60f126f/_next/static/chunks/3b6r52csxnske.js\",\"https://content-docs.newguys.io/fe-static/365669ea89ba74f96462f6b934af8397f60f126f/_next/static/chunks/0now7c63_08cn.js\",\"https://content-docs.newguys.io/fe-static/365669ea89ba74f96462f6b934af8397f60f126f/_next/static/chun"
+        },
+        {
+          "method": "GET",
+          "url": "https://d247bet.ug/en/sport/prematch/upcoming?_rsc=MK_GKcz2ukeqhX_R",
+          "status": 200,
+          "content_type": "text/x-component",
+          "size": 815,
+          "is_json": false,
+          "score": 9,
+          "post_data": null,
+          "custom_header_names": [
+            "referer"
+          ],
+          "sample": "0:{\"f\":[[[\"\",{\"children\":[[\"lang\",\"en\",\"d\",[\"%5Fbuild-id\",\".well-known\",\"api\",\"auth\",\"documents\",\"i18n-base\",\"llm.html\",\"llms.txt\",\"offline\",\"robots.txt\",\"site.webmanifest\",\"sitemap.xml\",\"sitemap_casino_categories.xml\",\"sitemap_casino_games.xml\",\"sitemap_casino_providers.xml\",\"sitemap_events.xml\",\"sitemap_info.xml\",\"sitemap_leagues.xml\",\"sitemap_pages.xml\",\"slots\"]],{\"children\":[\"(sport)\",{\"children\":[\"sport\",{\"children\":[\"prematch\",{\"children\":[\"upcoming\",{\"children\":[\"__PAGE__\",{},\"$undefined\""
+        },
+        {
+          "method": "GET",
+          "url": "https://d247bet.ug/en/sport/prematch/all/league/soccer/europe/uefa-nations-league?top=true&_rsc=MK_GKcz2ukeqhX_R",
+          "status": 200,
+          "content_type": "text/x-component",
+          "size": 1027,
+          "is_json": false,
+          "score": 9,
+          "post_data": null,
+          "custom_header_names": [
+            "referer"
+          ],
+          "sample": "0:{\"f\":[[[\"\",{\"children\":[[\"lang\",\"en\",\"d\",[\"%5Fbuild-id\",\".well-known\",\"api\",\"auth\",\"documents\",\"i18n-base\",\"llm.html\",\"llms.txt\",\"offline\",\"robots.txt\",\"site.webmanifest\",\"sitemap.xml\",\"sitemap_casino_categories.xml\",\"sitemap_casino_games.xml\",\"sitemap_casino_providers.xml\",\"sitemap_events.xml\",\"sitemap_info.xml\",\"sitemap_leagues.xml\",\"sitemap_pages.xml\",\"slots\"]],{\"children\":[\"(sport)\",{\"children\":[\"sport\",{\"children\":[\"prematch\",{\"children\":[[\"sportTab\",\"all\",\"d\",[\"all\",\"favorite\",\"top\",\"upc"
+        },
+        {
+          "method": "GET",
+          "url": "https://d247bet.ug/en/sport/prematch/all/league/soccer/europe/uefa-conference-league?top=true&_rsc=MK_GKcz2ukeqhX_R",
+          "status": 200,
+          "content_type": "text/x-component",
+          "size": 1030,
+          "is_json": false,
+          "score": 9,
+          "post_data": null,
+          "custom_header_names": [
+            "referer"
+          ],
+          "sample": "0:{\"f\":[[[\"\",{\"children\":[[\"lang\",\"en\",\"d\",[\"%5Fbuild-id\",\".well-known\",\"api\",\"auth\",\"documents\",\"i18n-base\",\"llm.html\",\"llms.txt\",\"offline\",\"robots.txt\",\"site.webmanifest\",\"sitemap.xml\",\"sitemap_casino_categories.xml\",\"sitemap_casino_games.xml\",\"sitemap_casino_providers.xml\",\"sitemap_events.xml\",\"sitemap_info.xml\",\"sitemap_leagues.xml\",\"sitemap_pages.xml\",\"slots\"]],{\"children\":[\"(sport)\",{\"children\":[\"sport\",{\"children\":[\"prematch\",{\"children\":[[\"sportTab\",\"all\",\"d\",[\"all\",\"favorite\",\"top\",\"upc"
+        },
+        {
+          "method": "GET",
+          "url": "https://d247bet.ug/en/sport/prematch/all/league/soccer/england/premier-league?top=true&_rsc=MK_GKcz2ukeqhX_R",
+          "status": 200,
+          "content_type": "text/x-component",
+          "size": 1023,
+          "is_json": false,
+          "score": 9,
+          "post_data": null,
+          "custom_header_names": [
+            "referer"
+          ],
+          "sample": "0:{\"f\":[[[\"\",{\"children\":[[\"lang\",\"en\",\"d\",[\"%5Fbuild-id\",\".well-known\",\"api\",\"auth\",\"documents\",\"i18n-base\",\"llm.html\",\"llms.txt\",\"offline\",\"robots.txt\",\"site.webmanifest\",\"sitemap.xml\",\"sitemap_casino_categories.xml\",\"sitemap_casino_games.xml\",\"sitemap_casino_providers.xml\",\"sitemap_events.xml\",\"sitemap_info.xml\",\"sitemap_leagues.xml\",\"sitemap_pages.xml\",\"slots\"]],{\"children\":[\"(sport)\",{\"children\":[\"sport\",{\"children\":[\"prematch\",{\"children\":[[\"sportTab\",\"all\",\"d\",[\"all\",\"favorite\",\"top\",\"upc"
+        },
+        {
+          "method": "GET",
+          "url": "https://d247bet.ug/en/sport/prematch/all/league/soccer/spain/la-liga?top=true&_rsc=MK_GKcz2ukeqhX_R",
+          "status": 200,
+          "content_type": "text/x-component",
+          "size": 1014,
+          "is_json": false,
+          "score": 9,
+          "post_data": null,
+          "custom_header_names": [
+            "referer"
+          ],
+          "sample": "0:{\"f\":[[[\"\",{\"children\":[[\"lang\",\"en\",\"d\",[\"%5Fbuild-id\",\".well-known\",\"api\",\"auth\",\"documents\",\"i18n-base\",\"llm.html\",\"llms.txt\",\"offline\",\"robots.txt\",\"site.webmanifest\",\"sitemap.xml\",\"sitemap_casino_categories.xml\",\"sitemap_casino_games.xml\",\"sitemap_casino_providers.xml\",\"sitemap_events.xml\",\"sitemap_info.xml\",\"sitemap_leagues.xml\",\"sitemap_pages.xml\",\"slots\"]],{\"children\":[\"(sport)\",{\"children\":[\"sport\",{\"children\":[\"prematch\",{\"children\":[[\"sportTab\",\"all\",\"d\",[\"all\",\"favorite\",\"top\",\"upc"
+        },
+        {
+          "method": "GET",
+          "url": "https://d247bet.ug/en/sport/prematch/all/league/soccer/germany/bundesliga?top=true&_rsc=MK_GKcz2ukeqhX_R",
+          "status": 200,
+          "content_type": "text/x-component",
+          "size": 1019,
+          "is_json": false,
+          "score": 9,
+          "post_data": null,
+          "custom_header_names": [
+            "referer"
+          ],
+          "sample": "0:{\"f\":[[[\"\",{\"children\":[[\"lang\",\"en\",\"d\",[\"%5Fbuild-id\",\".well-known\",\"api\",\"auth\",\"documents\",\"i18n-base\",\"llm.html\",\"llms.txt\",\"offline\",\"robots.txt\",\"site.webmanifest\",\"sitemap.xml\",\"sitemap_casino_categories.xml\",\"sitemap_casino_games.xml\",\"sitemap_casino_providers.xml\",\"sitemap_events.xml\",\"sitemap_info.xml\",\"sitemap_leagues.xml\",\"sitemap_pages.xml\",\"slots\"]],{\"children\":[\"(sport)\",{\"children\":[\"sport\",{\"children\":[\"prematch\",{\"children\":[[\"sportTab\",\"all\",\"d\",[\"all\",\"favorite\",\"top\",\"upc"
+        },
+        {
+          "method": "GET",
+          "url": "https://d247bet.ug/en/sport/prematch/all/league/soccer/italy/serie-a?top=true&_rsc=MK_GKcz2ukeqhX_R",
+          "status": 200,
+          "content_type": "text/x-component",
+          "size": 1014,
+          "is_json": false,
+          "score": 9,
+          "post_data": null,
+          "custom_header_names": [
+            "referer"
+          ],
+          "sample": "0:{\"f\":[[[\"\",{\"children\":[[\"lang\",\"en\",\"d\",[\"%5Fbuild-id\",\".well-known\",\"api\",\"auth\",\"documents\",\"i18n-base\",\"llm.html\",\"llms.txt\",\"offline\",\"robots.txt\",\"site.webmanifest\",\"sitemap.xml\",\"sitemap_casino_categories.xml\",\"sitemap_casino_games.xml\",\"sitemap_casino_providers.xml\",\"sitemap_events.xml\",\"sitemap_info.xml\",\"sitemap_leagues.xml\",\"sitemap_pages.xml\",\"slots\"]],{\"children\":[\"(sport)\",{\"children\":[\"sport\",{\"children\":[\"prematch\",{\"children\":[[\"sportTab\",\"all\",\"d\",[\"all\",\"favorite\",\"top\",\"upc"
+        },
+        {
+          "method": "GET",
+          "url": "https://d247bet.ug/en/sport/prematch/all/league/soccer/france/ligue-1?top=true&_rsc=MK_GKcz2ukeqhX_R",
+          "status": 200,
+          "content_type": "text/x-component",
+          "size": 1015,
+          "is_json": false,
+          "score": 9,
+          "post_data": null,
+          "custom_header_names": [
+            "referer"
+          ],
+          "sample": "0:{\"f\":[[[\"\",{\"children\":[[\"lang\",\"en\",\"d\",[\"%5Fbuild-id\",\".well-known\",\"api\",\"auth\",\"documents\",\"i18n-base\",\"llm.html\",\"llms.txt\",\"offline\",\"robots.txt\",\"site.webmanifest\",\"sitemap.xml\",\"sitemap_casino_categories.xml\",\"sitemap_casino_games.xml\",\"sitemap_casino_providers.xml\",\"sitemap_events.xml\",\"sitemap_info.xml\",\"sitemap_leagues.xml\",\"sitemap_pages.xml\",\"slots\"]],{\"children\":[\"(sport)\",{\"children\":[\"sport\",{\"children\":[\"prematch\",{\"children\":[[\"sportTab\",\"all\",\"d\",[\"all\",\"favorite\",\"top\",\"upc"
+        },
+        {
+          "method": "GET",
+          "url": "https://d247bet.ug/en/sport/prematch/all/league/american-football/usa/nfl?top=true&_rsc=MK_GKcz2ukeqhX_R",
+          "status": 200,
+          "content_type": "text/x-component",
+          "size": 1019,
+          "is_json": false,
+          "score": 9,
+          "post_data": null,
+          "custom_header_names": [
+            "referer"
+          ],
+          "sample": "0:{\"f\":[[[\"\",{\"children\":[[\"lang\",\"en\",\"d\",[\"%5Fbuild-id\",\".well-known\",\"api\",\"auth\",\"documents\",\"i18n-base\",\"llm.html\",\"llms.txt\",\"offline\",\"robots.txt\",\"site.webmanifest\",\"sitemap.xml\",\"sitemap_casino_categories.xml\",\"sitemap_casino_games.xml\",\"sitemap_casino_providers.xml\",\"sitemap_events.xml\",\"sitemap_info.xml\",\"sitemap_leagues.xml\",\"sitemap_pages.xml\",\"slots\"]],{\"children\":[\"(sport)\",{\"children\":[\"sport\",{\"children\":[\"prematch\",{\"children\":[[\"sportTab\",\"all\",\"d\",[\"all\",\"favorite\",\"top\",\"upc"
+        },
+        {
+          "method": "GET",
+          "url": "https://d247bet.ug/en/sport/prematch/all/league/soccer/europe/uefa-champions-league?top=true&_rsc=MK_GKcz2ukeqhX_R",
+          "status": 200,
+          "content_type": "text/x-component",
+          "size": 1029,
+          "is_json": false,
+          "score": 9,
+          "post_data": null,
+          "custom_header_names": [
+            "referer"
+          ],
+          "sample": "0:{\"f\":[[[\"\",{\"children\":[[\"lang\",\"en\",\"d\",[\"%5Fbuild-id\",\".well-known\",\"api\",\"auth\",\"documents\",\"i18n-base\",\"llm.html\",\"llms.txt\",\"offline\",\"robots.txt\",\"site.webmanifest\",\"sitemap.xml\",\"sitemap_casino_categories.xml\",\"sitemap_casino_games.xml\",\"sitemap_casino_providers.xml\",\"sitemap_events.xml\",\"sitemap_info.xml\",\"sitemap_leagues.xml\",\"sitemap_pages.xml\",\"slots\"]],{\"children\":[\"(sport)\",{\"children\":[\"sport\",{\"children\":[\"prematch\",{\"children\":[[\"sportTab\",\"all\",\"d\",[\"all\",\"favorite\",\"top\",\"upc"
+        },
+        {
+          "method": "GET",
+          "url": "https://api.d247bet.ug/snapshot-reader-2/v3/events/prematch/menu?dateTo=2027-11-26T00%3A00%3A00.000Z&language=1&sportId=1750",
+          "status": 200,
+          "content_type": "application/json; charset=utf-8",
+          "size": 9515,
+          "is_json": true,
+          "score": 9,
+          "post_data": null,
+          "custom_header_names": [
+            "referer"
+          ],
+          "sample": "{\"sports\":[{\"countries\":[{\"code\":\"EU\",\"leagues\":[{\"events\":12,\"id\":1768,\"name\":\"UEFA Nations League\",\"slug\":\"uefa-nations-league\"},{\"events\":18,\"id\":2296,\"name\":\"UEFA Champions League\",\"slug\":\"uefa-champions-league\"},{\"events\":18,\"id\":2301,\"name\":\"UEFA Europa League\",\"slug\":\"uefa-europa-league\"},{\"events\":1,\"id\":16174091,\"name\":\"UEFA Europa League. Matchday Statistics\",\"slug\":\"uefa-europa-league-matchday-statistics\"},{\"events\":18,\"id\":16233859,\"name\":\"UEFA Conference League\",\"slug\":\"uefa-confere"
+        }
+      ],
+      "websockets": [
+        "wss://api.d247bet.ug/event-subscription/notifications"
+      ],
+      "seconds": 28.6,
+      "responses_seen": 43
+    },
+    {
+      "name": "BetPawa",
+      "url": "https://www.betpawa.ug/",
+      "ok": true,
+      "error": null,
+      "final_url": "https://www.betpawa.ug/events?categoryId=2&marketId=1X2",
+      "candidates": [
+        {
+          "method": "GET",
+          "url": "https://www.betpawa.ug/api/preference/v1/brand-component-data?language=en",
+          "status": 200,
+          "content_type": "application/json",
+          "size": 35847,
+          "is_json": true,
+          "score": 59,
+          "post_data": null,
+          "custom_header_names": [
+            "content-type",
+            "referer",
+            "x-device-client-env",
+            "x-device-fingerprint",
+            "x-pawa-brand",
+            "x-pawa-language"
+          ],
+          "sample": "{\"ledger\":{\"transactionCategories\":{\"types\":[\"deposits\",\"withdrawals\",\"bets\",\"casino\",\"rewards\"]}},\"brandUser\":{\"actionApprovalOtpMethods\":[\"VOICE\",\"WHATSAPP\",\"SMS\",\"TELEGRAM\"],\"otpOptions\":[{\"availability\":{\"from\":7,\"to\":22},\"name\":\"VOICE\",\"position\":1},{\"name\":\"WHATSAPP\",\"position\":2},{\"name\":\"SMS\",\"position\":3},{\"name\":\"TELEGRAM\",\"position\":4}],\"webauthnMaxCredentials\":2147483647,\"webauthnOtpLength\":6,\"webauthnOtpMethods\":[\"VOICE\",\"WHATSAPP\",\"SMS\",\"TELEGRAM\"],\"webauthnRegistrationOtpRequired\""
+        },
+        {
+          "method": "GET",
+          "url": "https://www.betpawa.ug/_next/static/css/f2e2646091d7dec9.css",
+          "status": 200,
+          "content_type": "text/css",
+          "size": 32300,
+          "is_json": false,
+          "score": 29,
+          "post_data": null,
+          "custom_header_names": [
+            "referer"
+          ],
+          "sample": ".EventHeader_container__ZAjo1{background-color:var(--colors-background-inverse-default);color:var(--colors-text-primary-inverse);position:relative}.EventHeader_dateTime__cwgHV{background:var(--colors-background-inverse-secondary);border-radius:0 0 .5rem .5rem;left:0;margin:0 auto;min-width:2.5rem;padding:.25rem .5rem;position:absolute;right:0;text-align:center;top:0;white-space:nowrap;width:-webkit-min-content;width:min-content}.EventHeader_liveMinute__P5ZxN{background:var(--colors-background-se"
+        },
+        {
+          "method": "GET",
+          "url": "https://www.betpawa.ug/_next/static/css/d85b446c6ccbce67.css",
+          "status": 200,
+          "content_type": "text/css",
+          "size": 25564,
+          "is_json": false,
+          "score": 26,
+          "post_data": null,
+          "custom_header_names": [
+            "referer"
+          ],
+          "sample": ".Headline_containerTooltip__BxNru{align-items:center;display:flex;flex-shrink:0;gap:.5rem;justify-content:flex-end}.ios-le-12 .Headline_containerTooltip__BxNru{gap:0}.ios-le-12 .Headline_containerTooltip__BxNru>*+*{margin-left:.5rem}\n.SportEvents_row__hpo_u{flex-direction:row;justify-content:space-between}.SportEvents_iconGroup__Q3eTf,.SportEvents_row__hpo_u{align-items:center;display:flex}.SportEvents_iconGroup__Q3eTf{gap:.25rem;justify-content:center;line-height:1}.ios-le-12 .SportEvents_iconG"
+        },
+        {
+          "method": "GET",
+          "url": "https://www.betpawa.ug/api/sportsbook/v4/events/lists/by-queries?q=%7B%22queries%22%3A%5B%7B%22query%22%3A%7B%22eventType%22%3A%22UPCOMING%22%2C%22categories%22%3A%5B%222%22%5D%7D%2C%22sort%22%3A%7B%22popularity%22%3A%22DESC%22%7D%2C%22take%22%3A5%2C%22view%22%3A%7B%22marketTypes%22%3A%5B%223743%22%2C%2228000810%22%2C%2228000850%22%5D%7D%7D%2C%7B%22query%22%3A%7B%22eventType%22%3A%22LIVE%22%2C%22categories%22%3A%5B%222%22%2C%223%22%2C%22452%22%2C%22101%22%5D%2C%22boosted%22%3Afalse%7D%2C%22sort%22%3A%7B%22competitionPriority%22%3A%22DESC%22%7D%2C%22take%22%3A4%7D%2C%7B%22query%22%3A%7B%22eventType%22%3A%22UPCOMING%22%2C%22categories%22%3A%5B%22101%22%5D%7D%2C%22take%22%3A3%7D%2C%7B%22query%22%3A%7B%22eventType%22%3A%22UPCOMING%22%2C%22categories%22%3A%5B%223%22%5D%7D%2C%22take%22%3A3%7D%2C%7B%22query%22%3A%7B%22eventType%22%3A%22UPCOMING%22%2C%22categories%22%3A%5B%22452%22%5D%7D%2C%22take%22%3A3%7D%5D%2C%22keyMap%22%3A%7B%22events.eventType-UPCOMING.categories-2.regions-.competitions-.marketTypes-.hasOdds-.startTime-.popular-.boosted-.view-.sort-popularity%3ADESC.take-5%22%3A%22events.eventType-UPCOMING.categories-2.regions-.competitions-.marketTypes-.hasOdds-.startTime-.popular-.boosted-.view-3743%2C28000810%2C28000850.sort-popularity%3ADESC.take-5%22%2C%22events.eventType-LIVE.categories-2%2C3%2C452%2C101.regions-.competitions-.marketTypes-.hasOdds-.startTime-.popular-.boosted-false.view-.sort-competitionPriority%3ADESC.take-4%22%3A%22events.eventType-LIVE.categories-2%2C3%2C452%2C101.regions-.competitions-.marketTypes-.hasOdds-.startTime-.popular-.boosted-false.view-.sort-competitionPriority%3ADESC.take-4%22%2C%22events.eventType-UPCOMING.categories-101.regions-.competitions-.marketTypes-.hasOdds-.startTime-.popular-.boosted-.view-.sort-.take-3%22%3A%22events.eventType-UPCOMING.categories-101.regions-.competitions-.marketTypes-.hasOdds-.startTime-.popular-.boosted-.view-.sort-.take-3%22%2C%22events.eventType-UPCOMING.categories-3.regions-.competitions-.marketTypes-.hasOdds-.startTime-.popular-.boosted-.view-.sort-.take-3%22%3A%22events.eventType-UPCOMING.categories-3.regions-.competitions-.marketTypes-.hasOdds-.startTime-.popular-.boosted-.view-.sort-.take-3%22%2C%22events.eventType-UPCOMING.categories-452.regions-.competitions-.marketTypes-.hasOdds-.startTime-.popular-.boosted-.view-.sort-.take-3%22%3A%22events.eventType-UPCOMING.categories-452.regions-.competitions-.marketTypes-.hasOdds-.startTime-.popular-.boosted-.view-.sort-.take-3%22%7D%7D",
+          "status": 200,
+          "content_type": "application/x-protobuf",
+          "size": 18344,
+          "is_json": false,
+          "score": 18,
+          "post_data": null,
+          "custom_header_names": [
+            "content-type",
+            "referer",
+            "x-device-client-env",
+            "x-device-fingerprint",
+            "x-pawa-brand",
+            "x-pawa-language"
+          ],
+          "sample": "\n�<\u0012�\f\n\b37781884\u0012)Besiktas Istanbul - Hapoel Be`er Sheva FC\"\u001e\n\b74173060\u0012\nSPORTRADAR\u001a\u0006INPLAY\" \n\b74173060\u0012\nSPORTRADAR\u001a\bPREMATCH*\u001d\n\u0006658645\u0012\u0011Besiktas Istanbul\u0018\u0001*!\n\u0006659369\u0012\u0015Hapoel Be`er Sheva FC\u0018\u00022\u0006\b���\u0006:�\u0002\n�\u0001\n\u00043743\u0012\b1X2 - FT\u001a\u000f1X2 | Full Time\"wPick 1 (home team), X (draw), or 2 (away team). Result is based on regular playing time only - Overtime does not count.(\u00012\u0003all2\u0007popular\u0012�\u0001\n\t417097655\"9\n\n1590841185\u0012\u00011\u001a\u00043744!\u0000\u0000\u0000\u0000\u0000\u0000�?B\u00011J\u0002\u0018\u0001R\u0012\tl\u0005MK���?\u0011\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\"7\n\n1590841186\u0012\u0001X\u001a\u00043745!\u0000\u0000\u0000\u0000\u0000\u0000\u001b@B\u0001XJ\u0000R\u0012\t�&2s���?\u0011\u0000\u0000\u0000\u0000"
+        },
+        {
+          "method": "GET",
+          "url": "https://www.betpawa.ug/_next/static/css/790c60eb28fa9ae5.css",
+          "status": 200,
+          "content_type": "text/css",
+          "size": 26396,
+          "is_json": false,
+          "score": 18,
+          "post_data": null,
+          "custom_header_names": [
+            "referer"
+          ],
+          "sample": ".CasinoPills_casinoPills__C99Tq{display:flex;flex-direction:row;margin:.75rem 0;overflow-x:auto;padding:.25rem .75rem;scrollbar-width:none;-ms-overflow-style:none;gap:.25rem}.ios-le-12 .CasinoPills_casinoPills__C99Tq{gap:0}.ios-le-12 .CasinoPills_casinoPills__C99Tq>*+*{margin-left:.25rem}.CasinoPills_casinoPills__C99Tq::-webkit-scrollbar{display:none}\n.CasinoGameTile_root__IBbQG{align-items:center;background-color:var(--colors-background-tertiary);border-radius:.75rem;contain:layout style paint;"
+        },
+        {
+          "method": "GET",
+          "url": "https://www.betpawa.ug/api/sportsbook/v1/combo-cards/list?take=16",
+          "status": 200,
+          "content_type": "application/x-protobuf",
+          "size": 11302,
+          "is_json": false,
+          "score": 12,
+          "post_data": null,
+          "custom_header_names": [
+            "content-type",
+            "referer",
+            "x-device-client-env",
+            "x-device-fingerprint",
+            "x-pawa-brand",
+            "x-pawa-language"
+          ],
+          "sample": "\n�\u0005\n�\u0001\n\b37751974\u0012\u001c\n\u0006666748\u0012\u0010FC Kairat Almaty\u0018\u0001\u0012\u0017\n\u0006663507\u0012\u000bMjallby AIF\u0018\u0002\u001a\u0006\b����\u0006\"&\n\u000512545\u0012\u001dUEFA Europa Conference League*\u0004\u0010\u0001 \u00012\u0012\n\u00011\u0012\rInternational:\r\n\u00012\u0012\bFootball\u0012e\nE\n\u00043795\u0012\u0018Both Teams To Score - FT\u001a\u001fBoth Teams To Score | Full Time:\u0002\b\u0001\u0012\u001c\n\n1592406238\u0012\u0003Yes\u001a\u0003Yes\"\u00043796\u0012�\u0001\nN\n\u00045000\u0012\u001bTotal Score Over/Under - FT\u001a\u0016Over/Under | Full Time\"\u0006NORMAL:\u0002\b\u0001B\u0005\u0012\u00032.5\u00127\n\n1592406223\u0012\u0004Over\u001a\u0018Over {formattedHandicap}\"\u000450012\u00032.5\u0012�\u0001\nP\n\u00044976\u0012\u001bTotal Score Over/Under - 2H\u001a\u0018Over/Under | Second Half\"\u0006NORMAL:\u0002\b\u0001B\u0005\u0012\u00031.5\u00127\n\n15924062"
+        },
+        {
+          "method": "GET",
+          "url": "https://www.betpawa.ug/_next/static/css/41d6f09ba5860a33.css",
+          "status": 200,
+          "content_type": "text/css",
+          "size": 6120,
+          "is_json": false,
+          "score": 12,
+          "post_data": null,
+          "custom_header_names": [
+            "referer"
+          ],
+          "sample": ".Spinner_centered__puoXh{margin-top:50%}\n.ContentPageHeader_header__7whDo{align-items:center;color:var(--colors-text-primary);display:flex;gap:.5rem;padding:.75rem 1rem}.ios-le-12 .ContentPageHeader_header__7whDo{gap:0}.ios-le-12 .ContentPageHeader_header__7whDo>*+*{margin-left:.5rem}.ContentPageHeader_title__mvV6r{margin:0}\n.StrapiPage_marginContainer__87jUn{padding:.5rem}@media(min-width:376px){.StrapiPage_marginContainer__87jUn{padding:.75rem}}.StrapiPage_contentPage__uhBqX>:first-child{margi"
+        },
+        {
+          "method": "GET",
+          "url": "https://www.betpawa.ug/strapi/api/jurisdictions?filters%5Bhostname%5D%5B%24eq%5D=www.betpawa.ug&locale=en&pagination%5BpageSize%5D=1",
+          "status": 200,
+          "content_type": "application/json; charset=utf-8",
+          "size": 181803,
+          "is_json": true,
+          "score": 8,
+          "post_data": null,
+          "custom_header_names": [
+            "content-type",
+            "referer",
+            "x-device-client-env",
+            "x-device-fingerprint",
+            "x-pawa-language"
+          ],
+          "sample": "{\"data\":[{\"id\":271358,\"countryCode\":\"UG\",\"createdAt\":\"2023-03-16T16:50:42.113Z\",\"updatedAt\":\"2026-11-13T09:37:19.618Z\",\"publishedAt\":\"2026-11-13T09:37:20.114Z\",\"expiration\":1800000,\"locale\":\"en\",\"bestOddsLabel\":null,\"hostname\":\"www.betpawa.ug\",\"termsAndConditions\":\"{\\\"type\\\":\\\"doc\\\",\\\"content\\\":[{\\\"type\\\":\\\"paragraph\\\",\\\"attrs\\\":{\\\"textAlign\\\":\\\"left\\\"},\\\"content\\\":[{\\\"type\\\":\\\"text\\\",\\\"text\\\":\\\"By creating an account you accept the \\\"},{\\\"type\\\":\\\"text\\\",\\\"marks\\\":[{\\\"type\\\":\\\"link\\\",\\\"attrs\\\":"
+        },
+        {
+          "method": "GET",
+          "url": "https://www.betpawa.ug/_next/static/css/3be170694b6c579b.css",
+          "status": 200,
+          "content_type": "text/css",
+          "size": 7320,
+          "is_json": false,
+          "score": 6,
+          "post_data": null,
+          "custom_header_names": [
+            "referer"
+          ],
+          "sample": ".Spinner_centered__puoXh{margin-top:50%}\n.OutrightsFilters_filters__1D2Gt{background-color:var(--colors-background-default);display:flex;flex:0 0 52px;gap:.5rem;padding:.5rem .75rem;position:relative}.ios-le-12 .OutrightsFilters_filters__1D2Gt{gap:0}.ios-le-12 .OutrightsFilters_filters__1D2Gt>*+*{margin-left:.5rem}.OutrightsFilters_chip__3jYQp{flex-shrink:0}.OutrightsFilters_fullWidthContent__V4_1X.OutrightsFilters_fullWidthContent__V4_1X{max-width:none;position:absolute;right:0;width:auto}\n.Out"
+        },
+        {
+          "method": "GET",
+          "url": "https://www.betpawa.ug/api/sportsbook/v4/categories/list/2",
+          "status": 200,
+          "content_type": "application/x-protobuf",
+          "size": 20943,
+          "is_json": false,
+          "score": 3,
+          "post_data": null,
+          "custom_header_names": [
+            "content-type",
+            "referer",
+            "x-device-client-env",
+            "x-device-fingerprint",
+            "x-pawa-brand",
+            "x-pawa-language"
+          ],
+          "sample": "\n��\u0001\n\u0010\n\u00012\u0012\bFootball\u0018�\u0001\u0012�\u0001\n\u0019\n\u0003203\u0012\bSlovakia\"\bslovakia\u0012D\n \n\u000512533\u0012\tSuperliga\u001a\tsuperliga �\u0003\u0012\u0002\u0010\u0006\u001a\u001c\n\f\n\u0006\b����\u0006\u0012\u0002\u0010\u0004\n\f\n\u0006\b�֭�\u0006\u0012\u0002\u0010\u0002\u001a\u0002\u0010\u0006\"\u001c\n\f\n\u0006\b�֭�\u0006\u0012\u0002\u0010\u0002\n\f\n\u0006\b����\u0006\u0012\u0002\u0010\u0004\u0012j\n\u0017\n\u0003181\u0012\u0007Georgia\"\u0007georgia\u0012;\n%\n\u000512905\u0012\rErovnuli Liga\u001a\rerovnuli-liga\u0012\u0002\u0010\u0001\u001a\u000e\n\f\n\u0006\b����\u0006\u0012\u0002\u0010\u0001\u001a\u0002\u0010\u0001\"\u000e\n\f\n\u0006\b����\u0006\u0012\u0002\u0010\u0001\u0012�\u0001\n\u0013\n\u0003188\u0012\u0005Qatar\"\u0005qatar\u0012I\n3\n\u000512725\u0012\u00132nd Division League\u001a\u00132nd-division-league 2\u0012\u0002\u0010\u0002\u001a\u000e\n\f\n\u0006\b���\u0006\u0012\u0002\u0010\u0002\u0012W\n%\n\u000512166\u0012\fStars League\u001a\fstars-league d\u0012\u0002\u0010\u0006\u001a*\n\f\n\u0006\b����\u0006\u0012\u0002\u0010\u0002\n\f\n\u0006\b����\u0006\u0012\u0002\u0010\u0002\n\f\n\u0006\b�֭�\u0006\u0012\u0002\u0010\u0002\u001a\u0002\u0010\b\"8\n\f\n\u0006\b�֭�\u0006\u0012\u0002\u0010\u0002\n\f\n\u0006\b����\u0006\u0012\u0002\u0010\u0002\n\f\n\u0006\b����\u0006\u0012\u0002\u0010\u0002\n\f\n\u0006\b"
+        },
+        {
+          "method": "GET",
+          "url": "https://www.betpawa.ug/_next/static/css/128a8a8cb40c148a.css",
+          "status": 200,
+          "content_type": "text/css",
+          "size": 3840,
+          "is_json": false,
+          "score": 3,
+          "post_data": null,
+          "custom_header_names": [
+            "referer"
+          ],
+          "sample": ".LoginForm_container__lXHyE{background-color:var(--colors-background-secondary);border:.063rem solid var(--colors-border-default);border-radius:1rem;display:flex;flex-direction:column;gap:1rem;margin:.5rem auto auto 0;padding:.75rem;width:100%}.ios-le-12 .LoginForm_container__lXHyE{gap:0}.ios-le-12 .LoginForm_container__lXHyE>*+*{margin-top:1rem}.LoginForm_forgotPasswordContainer__yFEIc{align-items:center;display:flex;flex-direction:column;gap:.5rem;justify-content:space-between}.ios-le-12 .Logi"
+        },
+        {
+          "method": "POST",
+          "url": "https://o318738.ingest.us.sentry.io/api/4509988594384896/envelope/?sentry_version=7&sentry_key=[redacted]&sentry_client=sentry.javascript.nextjs%2F10.76.2",
+          "status": 200,
+          "content_type": "application/json",
+          "size": 2,
+          "is_json": true,
+          "score": 0,
+          "post_data": "{\"sent_at\":\"2026-11-26T03:46:00.188Z\",\"sdk\":{\"name\":\"sentry.javascript.nextjs\",\"version\":\"10.76.2\"}}\n{\"type\":\"session\"}\n{\"sid\":\"c45f1012aa85404296dcd7b54171048b\",\"init\":true,\"started\":\"2026-11-26T03:46:00.015Z\",\"timestamp\":\"2026-11-26T03:46:00.188Z\",\"status\":\"exited\",\"errors\":0,\"attrs\":{\"release\":\"frontend-react-web@3.5.41\",\"environment\":\"production\",\"user_agent\":\"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36\"}}",
+          "custom_header_names": [
+            "content-type",
+            "referer"
+          ],
+          "sample": "{}"
+        }
+      ],
+      "websockets": [],
+      "seconds": 27.9,
+      "responses_seen": 31
+    },
+    {
+      "name": "ChampionBet",
+      "url": "https://championbet.ug/",
+      "ok": true,
+      "error": null,
+      "final_url": "https://www.championbet.ug/desk/",
+      "candidates": [
+        {
+          "method": "GET",
+          "url": "https://www.championbet.ug/restapi/offer/en/top/desk?annex=13&sport=S&desktopVersion=1.48.4.10&locale=en",
+          "status": 200,
+          "content_type": "application/json",
+          "size": 265100,
+          "is_json": true,
+          "score": 75,
+          "post_data": null,
+          "custom_header_names": [
+            "referer",
+            "x-instana-l",
+            "x-instana-s",
+            "x-instana-t"
+          ],
+          "sample": "{\"systemTime\":\"2026/11/26 04:45:31\",\"elasticTook\":27,\"id\":\"S\",\"name\":null,\"description\":null,\"type\":\"TOP\",\"esMatches\":[{\"id\":240845736,\"matchCode\":211,\"home\":\"K. Almaty\",\"away\":\"Mjallby\",\"kickOffTime\":1795707000000,\"status\":0,\"blocked\":false,\"favourite\":true,\"params\":{\"overUnder\":\"2.5\",\"homeOverUnder\":\"1.5\",\"hd2\":\"-1\",\"awayOverUnder\":\"1.5\"},\"sport\":\"S\",\"sportToken\":\"00#S#Soccer\",\"leagueId\":2403031,\"leagueName\":\"UEFA Conference League - League Phase\",\"leagueToken\":\"A004#UEFA Conference League - L"
+        },
+        {
+          "method": "GET",
+          "url": "https://www.championbet.ug/ibet/translation/maxugx/en.json?desktopVersion=1.48.4.10",
+          "status": 200,
+          "content_type": "application/json;charset=UTF-8",
+          "size": 300444,
+          "is_json": true,
+          "score": 34,
+          "post_data": null,
+          "custom_header_names": [
+            "referer",
+            "x-instana-l",
+            "x-instana-s",
+            "x-instana-t"
+          ],
+          "sample": "{\"payinserviceerror.invalid_ticket_structure_live_not_running\":\"Live match $1 is not running\",\"global.day_of_week_tue\":\"tue\",\"nx_userInfoKonto\":\"Cash\",\"l_global.under\":\"Under\",\"date.year\":\"year\",\"payinserviceerror.invalid_ticket_structure_max_matches\":\"Maximum number of matches on ticket is $1\",\"title.time_range\":\"Time range\",\"match_live_status.EIGHTH_INNING\":\"8. INNING\",\"global_sport.MM\":\"MM\",\"nx_login.error_message\":\"Invalid username and/or password\",\"registration.login\":\"Log in\",\"profile_tran"
+        },
+        {
+          "method": "GET",
+          "url": "https://www.championbet.ug/restapi/offer/en/ttg_lang?desktopVersion=1.48.4.10&locale=en",
+          "status": 200,
+          "content_type": "application/json",
+          "size": 1364874,
+          "is_json": true,
+          "score": 27,
+          "post_data": null,
+          "custom_header_names": [
+            "referer",
+            "x-instana-l",
+            "x-instana-s",
+            "x-instana-t"
+          ],
+          "sample": "{\"systemTime\":\"2026/11/26 04:45:02\",\"elasticTook\":null,\"betMap\":{\"20480\":{\"code\":20480,\"caption\":\"Home Team 1st Goal In 1st or 2nd Half\",\"useSpecifiers\":true,\"displaySpecifiers\":null,\"sport\":\"VS\",\"orderNumber\":20480},\"20481\":{\"code\":20481,\"caption\":\"Away Team 1st Goal In 1st or 2nd Half\",\"useSpecifiers\":true,\"displaySpecifiers\":null,\"sport\":\"VS\",\"orderNumber\":20481},\"20482\":{\"code\":20482,\"caption\":\"Home Team - Overs/Unders\",\"useSpecifiers\":true,\"displaySpecifiers\":\"{total}\",\"sport\":\"VS\",\"orderNu"
+        },
+        {
+          "method": "GET",
+          "url": "https://www.championbet.ug/ibet/iParameters.json?instance_code=onlineug&application=DESKTOP&desktopVersion=1.48.4.10",
+          "status": 200,
+          "content_type": "application/json;charset=UTF-8",
+          "size": 34930,
+          "is_json": true,
+          "score": 22,
+          "post_data": null,
+          "custom_header_names": [
+            "referer"
+          ],
+          "sample": "{\"salesforce.deploymentName\":null,\"showLanguageInURL\":\"false\",\"snap_odds.scriptUrl\":null,\"enableUpperCaseInLoginEmail\":null,\"enableUpperCaseInUsername\":null,\"shouldShowUnlimitedValue\":\"deposit=true;withdrawal=true\",\"externalLinks.migrationInfo\":null,\"externalLinks.backgroundLeftBannerLink1\":null,\"excellentNewVirtualGamesBaseUrlDemo\":\"https://gamestest.exevirtual.com/$gameId$/index.php?deviceType=desktop&language=sr&clientName=b7568f8dd144af318ea56b3140a344e0f46f4e47&ccy=FUN\",\"externalLinks.backg"
+        },
+        {
+          "method": "GET",
+          "url": "https://www.championbet.ug/restapi/translate/en/seo?desktopVersion=1.48.4.10&locale=en",
+          "status": 200,
+          "content_type": "application/json",
+          "size": 6259,
+          "is_json": true,
+          "score": 21,
+          "post_data": null,
+          "custom_header_names": [
+            "referer",
+            "x-instana-l",
+            "x-instana-s",
+            "x-instana-t"
+          ],
+          "sample": "{\"external-contact-us.title\":\"Contact Us\",\"registration.meta.description\":\"Register your account on the Championbet betting website and start your journey today\",\"ticket-status.title\":\"Check your Ticket Status\",\"how-to/ussd.meta.description\":\"Our USSD application offers you a convenient and fast means of accessing your Championbet account anywhere, anytime. You can register an account, place a bet and withdraw your winnings.\",\"registration.title\":\"Registration Bonus\",\"how-to/sms.title\":\"How To R"
+        },
+        {
+          "method": "GET",
+          "url": "https://www.championbet.ug/ibet/parametersData.json?desktopVersion=1.48.4.10",
+          "status": 200,
+          "content_type": "application/json;charset=UTF-8",
+          "size": 36686,
+          "is_json": true,
+          "score": 14,
+          "post_data": null,
+          "custom_header_names": [
+            "referer"
+          ],
+          "sample": "{\"parameterValueMap\":{\"IBET_ENABLE_ALPHAPO_WITHDRAWAL\":{\"level\":\"ROOT\",\"value\":false},\"IBET_PAYTEN_MAX_DEPOSIT_AMOUNT\":{\"level\":\"ROOT\",\"value\":null},\"OTP_DURATION_ON_REGISTRATION_STEP\":{\"level\":\"ROOT\",\"value\":null},\"ACTIVE_JACKPOT_GROUPS\":{\"level\":\"ROOT\",\"value\":null},\"IBET_APCO_PAYOUT_ENABLE\":{\"level\":\"ROOT\",\"value\":false},\"IBET_ENABLE_PAYMENT_BY_ACCOUNT\":{\"level\":\"ROOT\",\"value\":false},\"LIVE_MIN_BETTING_QUOTA\":{\"level\":\"ROOT\",\"value\":1.0},\"ELBET_GAME_DEMOURL_CONFIGURATION\":{\"level\":\"ROOT\",\"valu"
+        },
+        {
+          "method": "POST",
+          "url": "https://www.championbet.ug/ibet/async/allImages.json?desktopVersion=1.48.4.10&locale=en",
+          "status": 200,
+          "content_type": "application/json;charset=UTF-8",
+          "size": 1588539,
+          "is_json": true,
+          "score": 9,
+          "post_data": "[{\"imageType\":\"HOME\",\"deviceType\":\"D\",\"recommended\":false,\"ignoreMatches\":true},{\"imageType\":\"LANDING_PAGE\",\"deviceType\":\"D\",\"recommended\":false,\"ignoreMatches\":true},{\"imageType\":\"LANDING_PAGE_BANNER_1\",\"deviceType\":\"D\",\"recommended\":false,\"ignoreMatches\":true},{\"imageType\":\"LANDING_PAGE_BANNER_2\",\"deviceType\":\"D\",\"recommended\":false,\"ignoreMatches\":true},{\"imageType\":\"LANDING_PAGE_BANNER_3\",\"deviceType\":\"D\",\"recommended\":false,\"ignoreMatches\":true},{\"imageType\":\"COMMERCIAL\",\"deviceType\":\"D\",\"r",
+          "custom_header_names": [
+            "content-type",
+            "referer",
+            "x-instana-l",
+            "x-instana-s",
+            "x-instana-t"
+          ],
+          "sample": "{\"LEFT_BANNER_2\":{\"ImageWithTranslations\":[],\"Match\":[]},\"LEFT_BANNER_1\":{\"ImageWithTranslations\":[],\"Match\":[]},\"RIGHT_BANNER_1\":{\"ImageWithTranslations\":[],\"Match\":[]},\"TOPGAME\":{\"ImageWithTranslations\":[],\"Match\":[]},\"RIGHT_BANNER_3\":{\"ImageWithTranslations\":[],\"Match\":[]},\"CASINO_BACKGROUND\":{\"ImageWithTranslations\":[],\"Match\":[]},\"RIGHT_BANNER_2\":{\"ImageWithTranslations\":[],\"Match\":[]},\"SLOT_IN_LOBBY_BANNER\":{\"ImageWithTranslations\":[],\"Match\":[]},\"LEFT_BANNER_3\":{\"ImageWithTranslations\":[]"
+        },
+        {
+          "method": "GET",
+          "url": "https://www.championbet.ug/ibet/getDisclaimerTranslations.json?desktopVersion=1.48.4.10&locale=en",
+          "status": 200,
+          "content_type": "application/json;charset=UTF-8",
+          "size": 641,
+          "is_json": true,
+          "score": 6,
+          "post_data": null,
+          "custom_header_names": [
+            "content-type",
+            "referer",
+            "x-instana-l",
+            "x-instana-s",
+            "x-instana-t"
+          ],
+          "sample": "{\"en\":\"Sports betting on Champion bet offers games from more than 800 world football leagues, tournaments and cups with possibility to bet prematch and live with availability of match trackers, league tables and statistics. Premiere League, La liga, Serie A, Budndesliga, Ligue 1, club games such as UEFA Champions League, Europa League and international tournaments all available to bet prematch and live. Online slot machines with gold, silver and bronze jackpot available for all registered player"
+        },
+        {
+          "method": "GET",
+          "url": "https://www.championbet.ug/ibet/getLobbiesHomeRoomsConfig.json?deviceType=desktop&limitRoundList=5&desktopVersion=1.48.4.10&locale=en",
+          "status": 200,
+          "content_type": "application/json;charset=UTF-8",
+          "size": 545537,
+          "is_json": true,
+          "score": 6,
+          "post_data": null,
+          "custom_header_names": [
+            "referer",
+            "x-instana-l",
+            "x-instana-s",
+            "x-instana-t"
+          ],
+          "sample": "{\"classicMobileCasinoHomeConfig\":{\"homeTabLabel\":\"Home\",\"winnersLabel\":null,\"gameOfTheWeekLabel\":\"Top Game\",\"gameOfTheWeekInfo\":null,\"gameOfTheWeekInfoLink\":null,\"casinoHomeRooms\":[{\"casinoRoomCode\":\"ug_popular\",\"lobbyCode\":\"10\",\"maxNumberOfGames\":20,\"showJackpot\":false,\"label\":\"Top Games\",\"showFaziJackpot\":false,\"showEgtJackpot\":false,\"isTopWidget\":false,\"sortPreference\":\"sortValue\",\"thumbnailScaleFactor\":1.0,\"numberOfRows\":2,\"enlargeGames\":[1,6,11,16],\"showTournaments\":false,\"numberOfActiveTou"
+        },
+        {
+          "method": "GET",
+          "url": "https://www.championbet.ug/restapi/translate/en/sports?desktopVersion=1.48.4.10&locale=en",
+          "status": 200,
+          "content_type": "application/json",
+          "size": 11873,
+          "is_json": true,
+          "score": 5,
+          "post_data": null,
+          "custom_header_names": [
+            "referer",
+            "x-instana-l",
+            "x-instana-s",
+            "x-instana-t"
+          ],
+          "sample": "[{\"name\":\"Olympics 2024\",\"shortName\":null,\"sportTypeCode\":\"OI\",\"orderNumber\":336.875,\"active\":true,\"oldTypeCode\":\"OI\",\"activeInLive\":true,\"sortValue\":\"00\"},{\"name\":\"Soccer\",\"shortName\":\"Soccer\",\"sportTypeCode\":\"S\",\"orderNumber\":1,\"active\":true,\"oldTypeCode\":\"F\",\"activeInLive\":true,\"sortValue\":\"00\"},{\"name\":\"Special WORLD CUP 2026\",\"shortName\":null,\"sportTypeCode\":\"SP\",\"orderNumber\":962.50001,\"active\":true,\"oldTypeCode\":\"S\",\"activeInLive\":false,\"sortValue\":\"01\"},{\"name\":\"Goalscorer\",\"shortName\":n"
+        },
+        {
+          "method": "GET",
+          "url": "https://www.championbet.ug/restapi/offer/en/bp/desk?desktopVersion=1.48.4.10&locale=en",
+          "status": 200,
+          "content_type": "application/json",
+          "size": 407628,
+          "is_json": true,
+          "score": 3,
+          "post_data": null,
+          "custom_header_names": [
+            "referer",
+            "x-instana-l",
+            "x-instana-s",
+            "x-instana-t"
+          ],
+          "sample": "{\"systemTime\":\"2026/11/26 04:46:30\",\"elasticTook\":null,\"betPages\":{\"DESKTOP_LIVE_TOP\":{\"BB\":{\"DEFAULT\":[{\"pageCode\":\"IBET2_UG_LV_TOP\",\"sport\":null,\"phases\":null,\"betPickGroupPositions\":[{\"betPickGroupId\":19704,\"rowPosition\":1,\"columnPosition\":1,\"picksPerRow\":2,\"specialValuePosition\":\"H\",\"phasePosition\":\"E\",\"specialBetValueAlgType\":\"AVG\",\"grouping\":false,\"groupBySpecifier\":null,\"specialValuesDisplayData\":null},{\"betPickGroupId\":19706,\"rowPosition\":1,\"columnPosition\":2,\"picksPerRow\":2,\"specialValu"
+        },
+        {
+          "method": "GET",
+          "url": "https://www.championbet.ug/restapi/offer/en/categories/s?annex=13&desktopVersion=1.48.4.10&locale=en",
+          "status": 200,
+          "content_type": "application/json",
+          "size": 3804,
+          "is_json": true,
+          "score": 3,
+          "post_data": null,
+          "custom_header_names": [
+            "referer",
+            "x-instana-l",
+            "x-instana-s",
+            "x-instana-t"
+          ],
+          "sample": "{\"systemTime\":\"2026/11/26 04:45:31\",\"elasticTook\":19,\"nodeName\":null,\"categories\":[{\"id\":\"S\",\"name\":\"Soccer\",\"imgUrl\":null,\"url\":\"/offer/en/categories/sport/S/l\",\"count\":1026,\"type\":\"SPORT\",\"children\":null,\"priority\":null,\"sport\":null},{\"id\":\"LG\",\"name\":\"League Goals\",\"imgUrl\":null,\"url\":\"/offer/en/categories/sport/LG/l\",\"count\":21,\"type\":\"SPORT\",\"children\":null,\"priority\":null,\"sport\":null},{\"id\":\"OR\",\"name\":\"Outright\",\"imgUrl\":null,\"url\":\"/offer/en/categories/sport/OR/l\",\"count\":586,\"type\":\"SP"
+        }
+      ],
+      "websockets": [
+        "wss://www.championbet.ug/ws4/stomp/045/lb3toqqg/websocket"
+      ],
+      "seconds": 29.4,
+      "responses_seen": 48
+    },
+    {
+      "name": "Betika",
+      "url": "https://www.betika.com/en-ke/",
+      "ok": true,
+      "error": null,
+      "final_url": "https://www.betika.com/en-ke/s/soccer",
+      "candidates": [
+        {
+          "method": "GET",
+          "url": "https://storage.googleapis.com/betika-cdn/website/terms-and-conditions.json",
+          "status": 200,
+          "content_type": "application/json",
+          "size": 275522,
+          "is_json": true,
+          "score": 99,
+          "post_data": null,
+          "custom_header_names": [
+            "referer"
+          ],
+          "sample": "[\n  {\n    \"id\": 1,\n    \"title\": \"General Terms And Conditions\",\n    \"subCategories\": [\n      {\n        \"id\": \"1.1\",\n        \"title\": \"Important Information\",\n        \"miniCategories\": [],\n        \"content\": \"<table><tr><td><p><em>Please ensure that You read and understand these terms prior to using the Service. Acceptance of these terms and conditions is a personal undertaking to be bound by these Terms. If you do not accept these Terms, please do not use Betika’s Services. The terms contain imp"
+        },
+        {
+          "method": "GET",
+          "url": "https://api.betika.com/v1/uo/matches?page=1&limit=10&tab=&sub_type_id=1,186,340&sport_id=14&tag_id=&sort_id=1&period_id=-1&esports=false",
+          "status": 200,
+          "content_type": "application/json",
+          "size": 16005,
+          "is_json": true,
+          "score": 87,
+          "post_data": null,
+          "custom_header_names": [
+            "referer"
+          ],
+          "sample": "{\"data\":[{\"home_team\":\"Mara Sugar FC\",\"game_id\":\"83971\",\"match_id\":\"11493148\",\"away_team\":\"Kenya Police FC\",\"start_time\":\"2026-11-26 15:00:00\",\"competition_name\":\"Premier League\",\"category\":\"Kenya\",\"parent_match_id\":\"74056948\",\"side_bets\":\"24\",\"home_odd\":\"2.75\",\"neutral_odd\":\"2.90\",\"away_odd\":\"2.75\",\"competition_id\":\"701\",\"sport_id\":\"14\",\"sport_name\":\"Soccer\",\"is_esport\":false,\"is_srl\":false,\"provider\":\"sr\",\"odds\":[{\"sub_type_id\":\"1\",\"name\":\"1X2\",\"odds\":[{\"display\":\"1\",\"odd_key\":\"Mara Sugar FC\","
+        },
+        {
+          "method": "GET",
+          "url": "https://cdn.betika.com/sport-icons/svg-sport_name-defs.svg",
+          "status": 200,
+          "content_type": "image/svg+xml",
+          "size": 102898,
+          "is_json": false,
+          "score": 63,
+          "post_data": null,
+          "custom_header_names": [
+            "referer"
+          ],
+          "sample": "<svg viewBox=\"0 0 350 350\">\n  <symbol viewBox=\"0 0 350 350\" id=\"alpine_skiing\">\n    <title>as</title>\n    <circle class=\"cls-1\" cx=\"132.23\" cy=\"53.14\" r=\"32.13\" />\n    <path class=\"cls-1\" d=\"M18.32,281.47H70.11a6.43,6.43,0,1,0,0-12.85H51.52l4.79-58.36a12.07,12.07,0,0,0,8.34.59L121,195l18.1-53.94,30.16,56c-37.71,14.76-79.91,28-101.78,34.28a9.64,9.64,0,0,0-1.1,18.14c24.71,10.44,42,12.63,52.13,12.63a42.64,42.64,0,0,0,10.43-1,9.77,9.77,0,0,0,1.08-.36l94.37-37.62,23.39,29.9c-39.94,17.08-85.93,36.28-1"
+        },
+        {
+          "method": "GET",
+          "url": "https://cdn.betika.com/seo-content/ke/seo-content-ke.json",
+          "status": 200,
+          "content_type": "application/json",
+          "size": 96608,
+          "is_json": true,
+          "score": 29,
+          "post_data": null,
+          "custom_header_names": [
+            "referer"
+          ],
+          "sample": "[\n  {\n    \"id\": 1,\n    \"sportCategory\": \"soccer\",\n    \"title\": \"Soccer Betting\",\n    \"content\": \"<p>Join our community of <b>soccer betting</b> fans with the Betika online sports betting site that allows you to bet on all your favourite football teams</p>\\n <p>Whether you call it soccer or football, the lovely game draws crowds and punters from around the globe. Now you can join in the spirit of <b>Betika football</b> from the comfort of your own home by placing an online bet on almost any profe"
+        },
+        {
+          "method": "GET",
+          "url": "https://cdn.betika.com/GA4/ga4-analytics-event-config.json",
+          "status": 200,
+          "content_type": "application/json",
+          "size": 12954,
+          "is_json": true,
+          "score": 21,
+          "post_data": null,
+          "custom_header_names": [
+            "referer"
+          ],
+          "sample": "{\n  \"registration\": {\n    \"attempt\": {\n      \"event\": \"registrationAttempt\",\n      \"eventCategory\": \"Registration\",\n      \"parameters\": [\"affiliateID\", \"mobileNumber\"]\n    },\n    \"start\": {\n      \"event\": \"registrationStart\",\n      \"eventCategory\": \"Registration\",\n      \"parameters\": [\"email\", \"mobileNumber\", \"affiliateID\", \"utmSource\", \"utmMedium\", \"utmCampaign\"]\n    },\n    \"success\": {\n      \"event\": \"registrationSuccess\",\n      \"eventCategory\": \"Registration\",\n      \"parameters\": [\"mobile\", \""
+        },
+        {
+          "method": "GET",
+          "url": "https://cdn.betika.com/seo-content/ke/meta-data-ke.json",
+          "status": 200,
+          "content_type": "application/json",
+          "size": 53338,
+          "is_json": true,
+          "score": 12,
+          "post_data": null,
+          "custom_header_names": [
+            "referer"
+          ],
+          "sample": "[\n  {\n    \"id\": 0,\n    \"metaTitle\": \"Betika | Best Online Sports Betting in Kenya\",\n    \"metaDesciption\": \"We have the fastest live, instant deposits and withdrawals and deposit cashback bonus. Sign up or log in to your account\"\n  },\n  {\n    \"id\": 1,\n    \"sportsCategory\": \"soccer\",\n    \"titleModifier\": \"Betting\",\n    \"usp\": \"Football Betting Odds\",\n    \"metaTitle\": \"Soccer Betting | Football Betting Odds | Betika\",\n    \"metaDesciption\": \"Bet on soccer easily and securely with Betika, view soccer"
+        },
+        {
+          "method": "GET",
+          "url": "https://api.betika.com/v1/sports",
+          "status": 200,
+          "content_type": "application/json",
+          "size": 36022,
+          "is_json": true,
+          "score": 6,
+          "post_data": null,
+          "custom_header_names": [
+            "referer"
+          ],
+          "sample": "{\"data\":[{\"sport_id\":\"45\",\"sport_name\":\"Table Tennis\",\"categories\":[{\"category_id\":\"2333\",\"category_name\":\"International\",\"competitions\":[{\"competition_id\":\"40741\",\"competition_name\":\"TT Elite Series\"},{\"competition_id\":\"31975\",\"competition_name\":\"TT Cup\"},{\"competition_id\":\"19593\",\"competition_name\":\"Challenger Series \"},{\"competition_id\":\"56039\",\"competition_name\":\"Feeder Dusseldorf II, WD\"},{\"competition_id\":\"56041\",\"competition_name\":\"Feeder Dusseldorf II, MD\"}]},{\"category_id\":\"117890\",\"cat"
+        },
+        {
+          "method": "GET",
+          "url": "https://api.betika.com/v1/uo/totalMatches",
+          "status": 200,
+          "content_type": "application/json",
+          "size": 55,
+          "is_json": true,
+          "score": 3,
+          "post_data": null,
+          "custom_header_names": [
+            "referer"
+          ],
+          "sample": "{\"total_live_matches\":100,\"total_shikisha_matches\":\"0\"}"
+        },
+        {
+          "method": "GET",
+          "url": "https://api.betika.com/v1/uo/sport?page=1&limit=1000&id=14",
+          "status": 200,
+          "content_type": "application/json",
+          "size": 20575,
+          "is_json": true,
+          "score": 3,
+          "post_data": null,
+          "custom_header_names": [
+            "referer"
+          ],
+          "sample": "{\"data\":[{\"category_id\":\"1960\",\"category_name\":\"England\",\"competitions\":[{\"competition_id\":\"203\",\"competition_name\":\"League One\",\"count\":\"25\"},{\"competition_id\":\"222\",\"competition_name\":\"Premier League\",\"count\":\"20\"},{\"competition_id\":\"167\",\"competition_name\":\"Championship\",\"count\":\"12\"},{\"competition_id\":\"693\",\"competition_name\":\"FA Cup\",\"count\":\"20\"},{\"competition_id\":\"307\",\"competition_name\":\"National League\",\"count\":\"12\"},{\"competition_id\":\"8398\",\"competition_name\":\"EFL Cup\",\"count\":\"4\"},{\"c"
+        },
+        {
+          "method": "GET",
+          "url": "https://userinfo.betika.com/",
+          "status": 200,
+          "content_type": "application/json; charset=utf-8",
+          "size": 70,
+          "is_json": true,
+          "score": 0,
+          "post_data": null,
+          "custom_header_names": [
+            "referer"
+          ],
+          "sample": "{\"ip\":\"20.169.76.216\",\"country\":\"US\",\"language\":\"en-UG\",\"isSaf\":false}"
+        },
+        {
+          "method": "GET",
+          "url": "https://ke-experiment-service.betika.com/api/features/?",
+          "status": 200,
+          "content_type": "application/json",
+          "size": 3320,
+          "is_json": true,
+          "score": 0,
+          "post_data": null,
+          "custom_header_names": [
+            "referer"
+          ],
+          "sample": "{\"status\":200,\"features\":{\"WP-9411-enable-cashia-integration\":{\"defaultValue\":false,\"rules\":[{\"id\":\"fr_19g61mmg0l114z\",\"condition\":{\"id\":{\"$in\":[\"27989277\",\"36817944\",\"21835938\",\"38078243\",\"8971764\",\"31892290\",\"21638430\",\"3388259\",\"24716670\",\"32835443\",\"2301826\",\"1247342\",\"2057485\",\"2330807\",\"1140421\",\"7451860\",\"24160\",\"33669049\",\"2301404\",\"7451875\",\"22240328\",\"2244996\",\"236886\",\"34102356\",\"13809568\",\"27557977\",\"4385654\",\"5259740\",\"16870611\",\"1603644\",\"27449717\",\"4462380\",\"37058354\",\"24\",\"307454"
+        },
+        {
+          "method": "GET",
+          "url": "https://settings.luckyorange.net/?u=https%3A%2F%2Fwww.betika.com%2Fen-ke%2F&s=329453",
+          "status": 200,
+          "content_type": "application/json",
+          "size": 25,
+          "is_json": true,
+          "score": 0,
+          "post_data": null,
+          "custom_header_names": [
+            "referer"
+          ],
+          "sample": "{\"over\":true,\"site_id\":0}"
+        }
+      ],
+      "websockets": [],
+      "seconds": 28.0,
+      "responses_seen": 72
+    },
+    {
+      "name": "22Bet",
+      "url": "https://22bet.ug/",
+      "ok": true,
+      "error": null,
+      "final_url": "https://22bet.ug/",
+      "candidates": [
+        {
+          "method": "GET",
+          "url": "https://22bet.ug/translation-api/by-lang/en",
+          "status": 200,
+          "content_type": "application/json",
+          "size": 20824,
+          "is_json": true,
+          "score": 12,
+          "post_data": null,
+          "custom_header_names": [
+            "referer",
+            "x-requested-with"
+          ],
+          "sample": "{\"data\":{\"type\":\"dictionary-asset-map\",\"id\":\"en\",\"attributes\":{\"version\":13883,\"dictionaryMap\":\"{\\\"1\\\":\\\"dictionary2\\\\\\/main\\\\\\/en\\\\\\/dictionary_c8367bb5f711ca955ef903eb1697d0d8.json\\\",\\\"2\\\":\\\"dictionary2\\\\\\/office\\\\\\/en\\\\\\/dictionary_65fdfd740f79ec56db4b88dd62bad32d.json\\\",\\\"3\\\":\\\"dictionary2\\\\\\/v3_main\\\\\\/en\\\\\\/dictionary_f0006f623390b167536583db372e97a5.json\\\",\\\"4\\\":\\\"dictionary2\\\\\\/v3_coupon\\\\\\/en\\\\\\/dictionary_93eb7888f45914c4879e93a7aa095db9.json\\\",\\\"5\\\":\\\"dictionary2\\\\\\/v3_game\\\\\\/en\\\\\\/d"
+        },
+        {
+          "method": "GET",
+          "url": "https://22bet.ug/genfiles/web-app-v2/dictionary2/v2_thirdparty/en/dictionary_450656ca57c14417ce01bd35fe3f9893.json",
+          "status": 200,
+          "content_type": "application/json; charset=utf-8",
+          "size": 79348,
+          "is_json": true,
+          "score": 12,
+          "post_data": null,
+          "custom_header_names": [
+            "referer",
+            "x-requested-with"
+          ],
+          "sample": "{\"v2_thirdparty_base_about_text_1\":\"Here, at {projectName} casino, we know what players need. Through our own gaming experience, we\\u0027ve discovered what’s important from the customer’s point of view: generous winnings, fast payouts, licensed software, a wide selection of games, a friendly and helpful customer support team and a user-friendly, no-fuss casino.\",\"v2_thirdparty_base_all\":\"All\",\"v2_thirdparty_base_all_products\":\"All providers\",\"v2_thirdparty_base_attention\":\"Attention\",\"v2_thirdpa"
+        },
+        {
+          "method": "POST",
+          "url": "https://22bet.ug/fatman-api/74162a95d23a02bac074394343090fbdfdd05de1/ab.json",
+          "status": 200,
+          "content_type": "application/json",
+          "size": 2,
+          "is_json": true,
+          "score": 0,
+          "post_data": "{\"state\":[]}",
+          "custom_header_names": [
+            "content-type",
+            "referer",
+            "x-lang",
+            "x-uuid"
+          ],
+          "sample": "[]"
+        },
+        {
+          "method": "POST",
+          "url": "https://22bet.ug/fatman-api/74162a95d23a02bac074394343090fbdfdd05de1/event.json",
+          "status": 200,
+          "content_type": "application/json",
+          "size": 23,
+          "is_json": true,
+          "score": 0,
+          "post_data": "{\"sw\":1366,\"sh\":768,\"u\":0,\"e\":5159,\"m\":{\"i1\":1,\"i2\":153},\"sids\":[]}",
+          "custom_header_names": [
+            "content-type",
+            "referer",
+            "x-lang",
+            "x-uuid"
+          ],
+          "sample": "{\"ts\":1795664846227404}"
+        },
+        {
+          "method": "POST",
+          "url": "https://analytics.ahrefs.com/api/event",
+          "status": 200,
+          "content_type": "application/json",
+          "size": 11,
+          "is_json": true,
+          "score": 0,
+          "post_data": "{\"n\":\"pageview\",\"u\":\"https://22bet.ug/\",\"l\":[\"en-UG\"],\"k\":\"samT8A6/pWqAZonGbC3qCQ\",\"r\":null,\"sw\":1366,\"sh\":768,\"sr\":1,\"t\":\"Access to website is restricted\"}",
+          "custom_header_names": [
+            "content-type",
+            "referer"
+          ],
+          "sample": "[\"Ok\",null]"
+        },
+        {
+          "method": "GET",
+          "url": "https://dsp-ap.eskimi.com/v2/gtr?id=34336&url=https%3A%2F%2F22bet.ug%2F&t=1795664846201",
+          "status": 200,
+          "content_type": "application/json",
+          "size": 116,
+          "is_json": true,
+          "score": 0,
+          "post_data": null,
+          "custom_header_names": [
+            "referer"
+          ],
+          "sample": "{\"dmpId\":\"ac037cfb-4f4d-4139-bd36-11f5ce93f8b4\",\"pixels\":[],\"pixelsPref\":\"https://dsp-trk.eskimi.com/\",\"scripts\":[]}"
+        },
+        {
+          "method": "GET",
+          "url": "https://dsp-trk.eskimi.com/tracking/cssession?tst&id=34336&url=https%3A%2F%2F22bet.ug%2F&t=1795664846200",
+          "status": 200,
+          "content_type": "text/plain; charset=UTF-8",
+          "size": 2,
+          "is_json": false,
+          "score": 0,
+          "post_data": null,
+          "custom_header_names": [
+            "referer"
+          ],
+          "sample": "OK"
+        },
+        {
+          "method": "GET",
+          "url": "https://www.google.com/gmp/conversion/_dc_unique_id=13757079278163977722;_dc_ptd=ChAIgKua2AYQyfWLzNXJ6rkEEh8AzLf5cK9lx0aws3F5laaM-A8lc5yrJfUcH7VRZP1_;_dc_time=1795664846;src=16126176;type=web_coun;cat=pagev00;rcb=17;ord=3518010853708;npa=0;auiddc=756216450.1795664846;uaa=x86;uab=64;uafvl=Not%253AA-Brand%3B8.0.0.0%7CChromium%3B156.0.8078.4%7CHeadlessChrome%3B156.0.8078.4;uamb=0;uam=;uap=Windows;uapv=10.0;uaw=0;pscdl=noapi;frm=0;_tu=KFA;gtm=45fe6bh1v9237398844z8830881424za20gzb830881424zd830881424xeaxf1;gcd=13l3l3l3l1l1;dma=0;dc_fmt=3;tag_exp=115616986~115938465~115938469~120213116~120385423~120469145~120469153~121246026~121246034;epver=2;dc_random=1795664846_tse0J67Kb6ki_uAGcIJaW5rHQHlC4EtZ2w;~oref=https%3A%2F%2F22bet.ug%2F?",
+          "status": 200,
+          "content_type": "image/gif",
+          "size": 42,
+          "is_json": false,
+          "score": 0,
+          "post_data": null,
+          "custom_header_names": [
+            "referer"
+          ],
+          "sample": "GIF89a\u0001\u0000\u0001\u0000�\u0000\u0000\u0000\u0000\u0000���!�\u0004\u0001\u0000\u0000\u0000\u0000,\u0000\u0000\u0000\u0000\u0001\u0000\u0001\u0000\u0000\u0002\u0001D\u0000;"
+        }
+      ],
+      "websockets": [],
+      "seconds": 22.2,
+      "responses_seen": 19
+    }
+  ]
+}
